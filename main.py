@@ -2,53 +2,15 @@
 from flask import Flask, render_template, redirect, request,url_for
 
 #create flask object
-app=Flask(__name__)
-
-#home page
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-
-
-#domain for login page
-@app.route('/login',methods=['GET','POST'])
-def login():
-    if request.method=='POST':
-        e=request.form.get('email')
-        if 'www.' in e:
-            t=e[4:]
-        else:
-            t=e
-        
-        username=''
-        for i in t:
-            if i=='@':
-                break
-            username+=i
-        if e=='iamadmin@gmail.com' and request.form.get('pass')=='123':   #checking admin id credentials
-            return redirect(url_for('admin'))   #takes to '/admin' page
-        
-        return redirect('/'+username+'/home')    #takes to '/user' page
+app=None
+def create_app():
+    app=Flask(__name__) #__name__ gives file and we encapsulate with flask
+    app.debug=True
+    app.app_context().push() #not very clear about this as of now but it kind of tells the 
+    return app
     
-    return render_template('login.html') 
-
-#domain for register page
-@app.route('/register',methods=['GET','POST'])
-def register():
-    
-    return render_template('register.html')
-
-#domain for admin dashboard
-@app.route('/admin')
-def admin():
-    return render_template('admin_dash.html')
-
-#domain for user dashboard
-@app.route('/<username>/home')
-def user(username):
-    return render_template('user_dash.html')
-
+app=create_app()
+from application.controllers import * #imports endpoints from controllers.py
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(debug=True) #runs the flask object with debug on so that every change reflects on server automatically
