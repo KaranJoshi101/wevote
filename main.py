@@ -4,6 +4,12 @@ from flask import Flask, render_template, redirect, request,url_for
 #create flask object
 app=Flask(__name__)
 
+#home page
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
 
 #domain for login page
 @app.route('/login',methods=['GET','POST'])
