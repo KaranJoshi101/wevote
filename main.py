@@ -15,10 +15,21 @@ def home():
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method=='POST':
-        if request.form.get('email')=='iamadmin@gmail.com' and request.form.get('pass')=='123':   #checking admin id credentials
+        e=request.form.get('email')
+        if 'www.' in e:
+            t=e[4:]
+        else:
+            t=e
+        
+        username=''
+        for i in t:
+            if i=='@':
+                break
+            username+=i
+        if e=='iamadmin@gmail.com' and request.form.get('pass')=='123':   #checking admin id credentials
             return redirect(url_for('admin'))   #takes to '/admin' page
         
-        return redirect('/user')    #takes to '/user' page
+        return redirect('/'+username+'/home')    #takes to '/user' page
     
     return render_template('login.html') 
 
@@ -34,8 +45,8 @@ def admin():
     return render_template('admin_dash.html')
 
 #domain for user dashboard
-@app.route('/user')
-def user():
+@app.route('/<username>/home')
+def user(username):
     return render_template('user_dash.html')
 
 
