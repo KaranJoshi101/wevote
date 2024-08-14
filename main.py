@@ -1,11 +1,14 @@
 #import flask module
 from flask import Flask, render_template, redirect, request,url_for
-
+from application.database import db
 #create flask object
 app=None
 def create_app():
     app=Flask(__name__) #__name__ gives file and we encapsulate with flask
     app.debug=True
+    
+    app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///wvote.sqlite3'
+    db.init_app(app)
     app.app_context().push() #not very clear about this as of now but it kind of tells the 
     return app
     
