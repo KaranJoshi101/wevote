@@ -25,6 +25,7 @@ def Username(e):
 
 from flask import Flask,render_template, redirect, request,url_for
 from flask import current_app as app
+from .models import *
 
 
 
@@ -44,11 +45,20 @@ def home():
 def login():
     if request.method=='POST':
         e=request.form.get('email')
+        p=request.form.get('pass')
         username=Username(e)
-        if e=='iamadmin@gmail.com' and request.form.get('pass')=='123':   #checking admin id credentials
+        if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
             return redirect(url_for('admin'))   #takes to '/admin' page
-        
-        return redirect('/'+username+'/home')    #takes to '/user' page
+        rec=User.query.filter_by(email=e).first()
+        if rec:
+            if rec.pwd==p:
+                return redirect('/'+username+'/home') 
+            else:
+                return 'invalid passsword'
+        else:
+            return 'email does not exist register->'
+
+           #takes to '/user' page
     
     return render_template('login.html') 
 
@@ -56,17 +66,30 @@ def login():
 @app.route('/register',methods=['GET','POST'])
 def register():
     if request.method=='POST':
-        
-        return redirect('/'+request.form.get('email')+'/verification')
+        email=request.form.get('email')
+        check=User.query.filter_by(email=email,registered=True).first()
+        if check:
+            return 'email already exists go to login page'
+        return redirect('/'+email+'/verification')
     return render_template('register1.html')
 
 @app.route('/<email>/verification',methods=['GET','POST'])
 def verify(email):
     if request.method=='POST':
         otp=request.form.get('one')+request.form.get('two')+request.form.get('three')+request.form.get('four')+request.form.get('five')+request.form.get('six')
-        if otp==o:
+        set=User.query.filter_by(email=email).first()
+        if str(set.otp)==otp:
             return redirect('/'+email+'/setpassword')
+        return 'wrong otp entered.Try again'
     o=Otp()
+    user_rec=User.query.filter_by(email=email).first()
+    if user_rec:
+        user_rec.otp=o
+    else:
+        user_rec=User(email=email,otp=o)
+        db.session.add(user_rec)
+    db.session.commit()
+    #otp sender
     from email.message import EmailMessage
     import ssl,smtplib
     sender='www.joshikaran3424@gmail.com'
@@ -74,13 +97,11 @@ def verify(email):
     rec=email
     sub='OTP for WeVote Application'
     body="""
-    Dear"""+Username(email)+""",
-
-
+    Dear """+Username(email)+""",
     Please use the OTP below to sign into the WeVote application.
 
 
-    OTP:"""+str(o)+"""
+    OTP: """+str(o)+"""
 
 
     Kind regards,
@@ -96,6 +117,8 @@ def verify(email):
     with smtplib.SMTP_SSL('smtp.gmail.com',465,context=context) as smtp:
         smtp.login(sender,pwd)
         smtp.sendmail(sender,rec,em.as_string())
+
+    
     return render_template('register2.html',email=email)
 
 
@@ -103,8 +126,15 @@ def verify(email):
 def setpassword(email):
     if request.method=='POST':
         p=request.form.get('pass')
+        rec=User.query.filter_by(email=email).first()
+        rec.pwd=p
+        rec.registered=True
+       
+        db.session.commit()
+        uname=Username(email)
+        return redirect('/'+uname+'/home')
 
-    return render_template('register3.html')
+    return render_template('register3.html',email=email)
 
 #domain for admin dashboard
 @app.route('/admin')
