@@ -22,7 +22,7 @@
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="desc"></textarea>
     </div>
     <span>
-      <p class="mb-2">Choose Start of Event</p>
+      <p class="mb-2" style="display: inline">Choose Start of Event<p style="display: inline;color: rgb(184, 4, 4);">*</p></p>
       <div class="col-sm-12 col-md-3 col-lg-3">
         <select class="form-select c" aria-label="Default select example">
           <option selected>Date</option>
@@ -62,18 +62,18 @@
       <div  class="col-sm-12 col-md-3 col-lg-3">
         <select class="form-select c " aria-label="Default select example">
           <option selected>Month</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
+          <option value="1">Jan</option>
+          <option value="2">Feb</option>
+          <option value="3">Mar</option>
+          <option value="4">Apr</option>
+          <option value="5">May</option>
+          <option value="6">Jun</option>
+          <option value="7">Jul</option>
+          <option value="8">Aug</option>
+          <option value="9">Sep</option>
+          <option value="10">Oct</option>
+          <option value="11">Nov</option>
+          <option value="12">Dec</option>
         </select>
       </div>
       <div class="col-sm-12 col-md-3 col-lg-3">
@@ -95,74 +95,59 @@
     </span>
 
     <span>
-      <p class="mb-2 mt-3 ">Choose End of Event</p>
-      <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c" aria-label="Default select example">
-          <option selected>Date</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
-          <option value="21">21</option>
-          <option value="22">22</option>
-          <option value="23">23</option>
-          <option value="24">24</option>
-          <option value="25">25</option>
-          <option value="26">26</option>
-          <option value="27">27</option>
-          <option value="28">28</option>
-          <option value="29">29</option>
-          <option value="30">30</option>
-          <option value="31">31</option>
-        </select>
-      </div>
-      <div  class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example">
-          <option selected>Month</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-        </select>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example">
-        <option selected>Year</option>
-        <option value="2024">2024</option>
-        <option value="2025">2025</option>
-        <option value="2026">2026</option>
-        <option value="2027">2027</option>
-        <option value="2028">2028</option>
-        <option value="2029">2029</option>
-        <option value="2030">2030</option>
-      </select>
-      <div class="cs-form">
-        <input type="time" class="form-control" value="10:05 AM" name="stime" />
-      </div>
+      <p class="mb-2 mt-3 ">Duration of Event</p>
+      <div style="display: flex;align-items: center;">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+            <select class="form-select c " aria-label="Default select example">
+              <option selected>Hours</option>
+              <option value="1">1 Hour</option>
+              <option value="2">2 Hours</option>
+              <option value="3">3 Hours</option>
+              <option value="4">4 Hours</option>
+              <option value="5">5 Hours</option>
+              <option value="6">6 Hours</option>
+              <option value="7">7 Hours</option>
+              <option value="8">8 Hours</option>
+              <option value="9">9 Hours</option>
+              <option value="10">10 Hours</option>
+              <option value="11">11 Hours</option>
+              <option value="12">12 Hours</option>
+              <option value="13">13 Hours</option>
+              <option value="14">14 Hours</option>
+              <option value="15">15 Hours</option>
+              <option value="16">16 Hours</option>
+              <option value="17">17 Hours</option>
+              <option value="18">18 Hours</option>
+              <option value="19">19 Hours</option>
+              <option value="20">20 Hours</option>
+              <option value="21">21 Hours</option>
+              <option value="22">22 Hours</option>
+              <option value="23">23 Hours</option>
+              <option value="24">24 Hours</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-check mx-4">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+          <label class="form-check-label" for="flexRadioDefault2">
+            <select class="form-select c " aria-label="Default select example">
+              <option selected>Minutes</option>
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="15">15 min</option>
+              <option value="20">20 min</option>
+              <option value="25">25 min</option>
+              <option value="30">30 min</option>
+              <option value="35">35 min</option>
+              <option value="40">40 min</option>
+              <option value="45">45 min</option>
+              <option value="50">50 min</option>
+              <option value="55">55 min</option>
+            </select>
+          </label>
+        </div>
     </div>
     </span>
 
