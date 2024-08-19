@@ -6,21 +6,15 @@ def Otp():
         k=k*10+random.randrange(0,9)
     return k
 
-
-#to get username from email
 def Username(e):
     if 'www.' in e:
-        t=e[4:]
-    else:
-        t=e
-        
-    username=''
-    for i in t:
+        e=e[4:]
+    newe=''
+    for i in e:
         if i=='@':
             break
-        username+=i
-    return username
-
+        newe+=i
+    return newe
 
 
 from flask import Flask,render_template, redirect, request,url_for
@@ -46,15 +40,15 @@ def login():
     if request.method=='POST':
         e=request.form.get('email')
         p=request.form.get('pass')
-        username=Username(e)
+        
         if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
             return redirect(url_for('admin'))   #takes to '/admin' page
         rec=User.query.filter_by(email=e).first()
         if rec:
             if rec.pwd==p:
-                return redirect('/'+username+'/home') 
+                return redirect('/'+rec.name+'/home') 
             else:
-                return 'invalid passsword'
+                return render_template('login-wrong-pass.html')
         else:
             return 'email does not exist register->'
 
@@ -79,7 +73,7 @@ def verify(email):
         otp=request.form.get('one')+request.form.get('two')+request.form.get('three')+request.form.get('four')+request.form.get('five')+request.form.get('six')
         set=User.query.filter_by(email=email).first()
         if str(set.otp)==otp:
-            return redirect('/'+email+'/setpassword')
+            return redirect('/'+Username(email)+'/setpassword')
         return 'wrong otp entered.Try again'
     o=Otp()
     user_rec=User.query.filter_by(email=email).first()
@@ -126,13 +120,15 @@ def verify(email):
 def setpassword(email):
     if request.method=='POST':
         p=request.form.get('pass')
+        n=request.form.get('name')
         rec=User.query.filter_by(email=email).first()
         rec.pwd=p
+        rec.name=n
         rec.registered=True
        
         db.session.commit()
-        uname=Username(email)
-        return redirect('/'+uname+'/home')
+        
+        return redirect('/'+n+'/home')
 
     return render_template('register3.html',email=email)
 
@@ -142,7 +138,27 @@ def admin():
     return render_template('admin_dash.html')
 
 #domain for user dashboard
-@app.route('/<username>/home')
-def user(username):
-    return render_template('user_dash.html')
+@app.route('/<email>/home')
+def user(email):
+    rec=User.query.filter_by(email=email).first()
+    
+    return render_template('user_dash.html',name=rec.name,email=email)
+
+
+#domain for organize
+@app.route('/<email>/organize',methods=['GET','POST'])
+def org(email):
+    if request.method=='POST':
+        t=request.form.get('title')
+        d=request.form.get('desc')
+        time=request.form.get('time')
+        date=request.form.get('date')
+        l=request.form.get('voters')
+        c=request.form.get('cand')
+        rec=User.query.get(email=email).first()
+        e=Event(user_id=rec.id,title=t,desc=d,time=time,date=date)
+        db.session.add(e)
+        db.session.commit()
+    return render_template('organize.html')
+
 
