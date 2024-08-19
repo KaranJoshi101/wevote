@@ -46,7 +46,7 @@ def login():
         rec=User.query.filter_by(email=e).first()
         if rec:
             if rec.pwd==p:
-                return redirect('/'+rec.name+'/home') 
+                return redirect('/'+e+'/home') 
             else:
                 return render_template('login-wrong-pass.html')
         else:
@@ -73,7 +73,7 @@ def verify(email):
         otp=request.form.get('one')+request.form.get('two')+request.form.get('three')+request.form.get('four')+request.form.get('five')+request.form.get('six')
         set=User.query.filter_by(email=email).first()
         if str(set.otp)==otp:
-            return redirect('/'+Username(email)+'/setpassword')
+            return redirect('/'+email+'/setpassword')
         return 'wrong otp entered.Try again'
     o=Otp()
     user_rec=User.query.filter_by(email=email).first()
@@ -125,10 +125,8 @@ def setpassword(email):
         rec.pwd=p
         rec.name=n
         rec.registered=True
-       
         db.session.commit()
-        
-        return redirect('/'+n+'/home')
+        return redirect('/'+email+'/home')
 
     return render_template('register3.html',email=email)
 
@@ -141,8 +139,8 @@ def admin():
 @app.route('/<email>/home')
 def user(email):
     rec=User.query.filter_by(email=email).first()
-    
-    return render_template('user_dash.html',name=rec.name,email=email)
+    print(rec)
+    return render_template('user_dash.html',email=email,name=rec.name)
 
 
 #domain for organize
