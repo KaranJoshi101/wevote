@@ -5,7 +5,7 @@ from application.database import db
 app=None
 def create_app():
     app=Flask(__name__) #__name__ gives file and we encapsulate with flask
-    app.debug=False
+    app.debug=True
     
     app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///wvote.sqlite3'
     db.init_app(app)
