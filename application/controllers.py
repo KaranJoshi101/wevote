@@ -139,7 +139,6 @@ def admin():
 @app.route('/<email>/home')
 def user(email):
     rec=User.query.filter_by(email=email).first()
-    print(rec)
     return render_template('user_dash.html',email=email,name=rec.name)
 
 
@@ -147,16 +146,19 @@ def user(email):
 @app.route('/<email>/organize',methods=['GET','POST'])
 def org(email):
     if request.method=='POST':
+        import datetime
         t=request.form.get('title')
         d=request.form.get('desc')
-        time=request.form.get('time')
-        date=request.form.get('date')
+        ti=request.form.get('stime')
+        print(ti,type(ti))
+        sdate=datetime.datetime(int(request.form.get('syear')),int(request.form.get('smonth')),int(request.form.get('sdate')))
+        stime=datetime.time(int(ti[:2]),int(ti[3:]))
         l=request.form.get('voters')
         c=request.form.get('cand')
-        rec=User.query.get(email=email).first()
-        e=Event(user_id=rec.id,title=t,desc=d,time=time,date=date)
+        rec=User.query.filter_by(email=email).first()
+        e=Event(user_id=rec.id,title=t,desc=d,time=stime,sdate=sdate)
         db.session.add(e)
         db.session.commit()
-    return render_template('organize.html')
+    return render_template('organize.html',email=email)
 
 
