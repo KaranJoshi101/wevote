@@ -150,13 +150,21 @@ def org(email):
         t=request.form.get('title')
         d=request.form.get('desc')
         ti=request.form.get('stime')
-        print(ti,type(ti))
-        sdate=datetime.datetime(int(request.form.get('syear')),int(request.form.get('smonth')),int(request.form.get('sdate')))
-        stime=datetime.time(int(ti[:2]),int(ti[3:]))
+        sdate=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
+        
         l=request.form.get('voters')
         c=request.form.get('cand')
         rec=User.query.filter_by(email=email).first()
-        e=Event(user_id=rec.id,title=t,desc=d,time=stime,sdate=sdate)
+        durh=request.form.get("checkextendhour")
+        durm=request.form.get("checkextendminute")
+        if durh:
+            dur=int(request.form.get("extendhour"))
+            stime=sdate+datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),dur,0)
+        else:
+            dur=int(request.form.get("extendminute"))
+            stime=sdate+datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),0,dur)
+        
+        e=Event(user_id=rec.id,title=t,desc=d,time=stime,sdate=sdate,duration=dur)
         db.session.add(e)
         db.session.commit()
     return render_template('organize.html',email=email)
