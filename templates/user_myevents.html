@@ -9,67 +9,58 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Admin Dashboard</a>
+          <a class="navbar-brand" href="#">{{name}}'s Dashboard</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/admin">Dashboard</a>
+                <a class="nav-link" href="/{{email}}/organize">Organize</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/admin/events">Events</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/admin/stats">Stats</a>
+                <a class="nav-link" href="/{{email}}/home">Dashboard</a>
               </li>
-             
               
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
             <a class="btn btn-danger" href="/">Logout</a>
           </div>
         </div>
       </nav>
-    <h2>Approve Events</h2>
+    <h2>Organized Events</h2>
     {% if events|length == 0 %}
-        <h3>No Events To Approve</h3>
-    
+        <p>No Events Organized Yet. <a href="/{{email}}/organize">Let's Create One</a></p>
     {%else%}
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th scope="col">S.No.</th>
-                <th scope="col">Request Date</th>
-                <th scope="col">Organizer id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
-                <th scope="col">Voters Count</th>
                 <th scope="col">Start Time</th>
                 <th scope="col">End Time</th>
-                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
-                
             </tr>
         </thead>
         <tbody>
             {%for event in events%}
                 <tr>
                     <th scope="row">{{loop.index}}</th>
-                    <td>{{event.createTime}}</td>
-                    <td>{{event.organizerId}}</td>
                     <td>{{event.title}}</td>
                     <td>{{event.desc}}</td>
-                    <td>{{event.voterCount}}</td>
                     <td>{{event.startTime}}</td>
                     <td>{{event.endTime}}</td>
-                    <td><input type="text" placeholder="Reason for your action"></td>
-                    <td><a type="button" class="btn btn-primary" href="/admin/approve">Approve</a><a type="button" class="btn btn-danger" href="/{{event.id}}/reject">Reject</a></td>
-            
+                    {% if event.isApproved=='True' %}
+                        <td>Approved</td>
+                    {%else%}
+                        <td>To Be Reviewed</td>
+                    {%endif%}
+                    <td><a class="btn btn-primary" href="/{{event.id}}/update">Update</a><a class="btn btn-danger" href="/{{event.id}}/delete">Delete</a></td>
                 </tr>
                 {%endfor%}
             

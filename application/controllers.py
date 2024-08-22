@@ -148,10 +148,14 @@ def adminApproval():
     events=Event.query.all()
     return render_template('admin_approval.html',events=events)
 
-@app.route('/admin/<event_id>/reject')
-def adminRejects(event_id):
+
+@app.route('/event_id/delete')
+def deleteEvent(event_id):
     db.session.delete(Event.query.get(event_id))
     db.session.commit()
+@app.route('/<event_id>/reject')
+def adminRejects(event_id):
+    deleteEvent(event_id)
     return redirect('/admin/approve')
 
 
@@ -227,6 +231,8 @@ def organizeEvents(email):
     return render_template('organize.html',email=email)
 
 @app.route('/<email>/myevents')
-def userEvents():
-    return ''
+def userEvents(email):
+    user=User.query.filter_by(email=email).first()
+    events=Event.query.filter_by(organizerId=user.id).all()
+    return render_template('user_myevents.html',events=events,name=user.name,email=email)
 
