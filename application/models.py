@@ -29,7 +29,8 @@ class Event(db.Model):
     user_id=db.Column(db.Integer(),db.ForeignKey('user.id'))
     title=db.Column(db.String(),default='x')
     desc=db.Column(db.String(),default='x')
-    time=db.Column(db.DateTime,nullable=False)
-    sdate=db.Column(db.DateTime,nullable=False)
-    duration=db.Column(db.Integer(),nullable=False)
+    etime=db.Column(db.DateTime,nullable=False)
+    stime=db.Column(db.DateTime,nullable=False)
+    isapproved=db.Column(db.Boolean,default=False)
     votes=db.relationship('Vote',backref='event')
+    

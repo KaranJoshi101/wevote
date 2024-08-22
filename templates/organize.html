@@ -8,7 +8,7 @@
 </head>
 <body style="display: flex; justify-content: center;">
   <div class="container-sm col-lg-6 col-md-10 col-sm-12" style="margin-top: 120px; border: 0.5px solid rgb(187, 182, 182); padding: 20px 20px 20px 20px; border-radius: 1%;">
-    <form>
+    <form method="POST">
     <div>
       <h3 style="text-align: center;font-weight: 700;">Organise a Event</h3>
       <p style="text-align: center;font-size: smaller;color: rgb(99, 97, 97);">Complete the below fields to organise a event.</p>
@@ -25,7 +25,7 @@
     <span>
       <p class="mb-2" style="display: inline">Choose Start of Event<p style="display: inline;color: rgb(184, 4, 4);">*</p></p>
       <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c" aria-label="Default select example">
+        <select class="form-select c" aria-label="Default select example" name="date">
           <option selected>Date</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -61,7 +61,7 @@
         </select>
       </div>
       <div  class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example">
+        <select class="form-select c " aria-label="Default select example" name="month">
           <option selected>Month</option>
           <option value="1">Jan</option>
           <option value="2">Feb</option>
@@ -78,7 +78,7 @@
         </select>
       </div>
       <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example">
+        <select class="form-select c " aria-label="Default select example" name="year">
         <option selected>Year</option>
         <option value="2024">2024</option>
         <option value="2025">2025</option>
@@ -89,7 +89,7 @@
         <option value="2030">2030</option>
       </select>
       <div class="cs-form">
-        <input type="time" class="form-control" value="10:05 AM" name="stime" />
+        <input type="time" class="form-control" name="stime" />
       </div>
     </div>
       
@@ -99,11 +99,11 @@
       <p class="mb-2 mt-3 ">Duration of Event</p>
       <div style="display: flex;align-items: center;">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <input class="form-check-input" type="radio" name="checkextendhour" id="flexRadioDefault1">
           <label class="form-check-label" for="flexRadioDefault1">
-            <select class="form-select c " aria-label="Default select example">
-              <option selected>Hours</option>
-              <option value="1">1 Hour</option>
+            <select class="form-select c " aria-label="Default select example" name="extendhour">
+              
+              <option value="1" selected>1 Hour</option>
               <option value="2">2 Hours</option>
               <option value="3">3 Hours</option>
               <option value="4">4 Hours</option>
@@ -131,11 +131,11 @@
           </label>
         </div>
         <div class="form-check mx-4">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+          <input class="form-check-input" type="radio" name="checkextendminute" id="flexRadioDefault2" checked>
           <label class="form-check-label" for="flexRadioDefault2">
-            <select class="form-select c " aria-label="Default select example">
-              <option selected>Minutes</option>
-              <option value="5">5 min</option>
+            <select class="form-select c " aria-label="Default select example" name="extendminute">
+              
+              <option value="5" selected>5 min</option>
               <option value="10">10 min</option>
               <option value="15">15 min</option>
               <option value="20">20 min</option>
@@ -155,17 +155,17 @@
    
     <div class="input-group mb-3 mt-3">
       <div class="input-group-text">
-        <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+        <input class="form-check-input mt-0" type="checkbox" name="allowcand" aria-label="Checkbox for following text input">
       </div>
       <span class="input-group-text">Candidates</span>
-      <textarea class="form-control" aria-label="With textarea" rows="2" name="candidates"></textarea>
+      <textarea class="form-control" aria-label="With textarea" rows="2" name="candidates" placeholder="check the checkbox to enter candidates email-ids separated with commas"></textarea>
     </div>
     
     <div class="input-group">
       <span class="input-group-text">Voters</span>
-      <textarea class="form-control" aria-label="With textarea" rows="5" required name="voters"></textarea>
+      <textarea class="form-control" aria-label="With textarea" rows="5" name="voters" placeholder="enter voters email-ids separated with commas" required></textarea>
     </div>
-  <button type="button" class="btn btn-primary mt-3" name="request">Request for Event</button>
+  <button type="submit" class="btn btn-primary mt-3" name="request">Request for Event</button>
 
   
 </form>
