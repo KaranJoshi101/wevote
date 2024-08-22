@@ -1,4 +1,4 @@
-#otp function
+#otp generating function
 def Otp():
     import random
     k=0
@@ -6,6 +6,7 @@ def Otp():
         k=k*10+random.randrange(0,9)
     return k
 
+#separates username from email
 def Username(e):
     if 'www.' in e:
         e=e[4:]
@@ -17,8 +18,11 @@ def Username(e):
     return newe
 
 
+#methods imported from flask module
 from flask import Flask,render_template, redirect, request,url_for
 from flask import current_app as app
+
+#models content imported in this file
 from .models import *
 
 
@@ -29,12 +33,12 @@ from .models import *
 
 #home page
 @app.route('/')
-def home():
+def homePage():
     return render_template('index.html')
 
 
 
-#domain for login page
+#url for login page
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method=='POST':
@@ -56,9 +60,10 @@ def login():
     
     return render_template('login.html') 
 
-#domain for register page
+
+#url for register page
 @app.route('/register',methods=['GET','POST'])
-def register():
+def userRegister():
     if request.method=='POST':
         email=request.form.get('email')
         check=User.query.filter_by(email=email,registered=True).first()
@@ -67,8 +72,9 @@ def register():
         return redirect('/'+email+'/verification')
     return render_template('register1.html')
 
+#url for verifying email
 @app.route('/<email>/verification',methods=['GET','POST'])
-def verify(email):
+def verifyEmail(email):
     if request.method=='POST':
         otp=request.form.get('one')+request.form.get('two')+request.form.get('three')+request.form.get('four')+request.form.get('five')+request.form.get('six')
         set=User.query.filter_by(email=email).first()
@@ -116,8 +122,9 @@ def verify(email):
     return render_template('register2.html',email=email)
 
 
+#url for setting password after verification
 @app.route('/<email>/setpassword',methods=['GET','POST'])
-def setpassword(email):
+def setPassword(email):
     if request.method=='POST':
         p=request.form.get('pass')
         n=request.form.get('name')
@@ -130,21 +137,21 @@ def setpassword(email):
 
     return render_template('register3.html',email=email)
 
-#domain for admin dashboard
+#url for admin dashboard
 @app.route('/admin')
-def admin():
+def adminDashboard():
     return render_template('admin_dash.html')
 
-#domain for user dashboard
+#url for user dashboard
 @app.route('/<email>/home')
-def user(email):
+def userDashboard(email):
     rec=User.query.filter_by(email=email).first()
     return render_template('user_dash.html',email=email,name=rec.name)
 
 
-#domain for organize
+#url for organize
 @app.route('/<email>/organize',methods=['GET','POST'])
-def org(email):
+def organizeEvents(email):
     if request.method=='POST':
         import datetime
         t=request.form.get('title')
@@ -203,9 +210,9 @@ def org(email):
                 db.session.add(r)
                 db.session.commit()
         return 'Event sent for Approval to the Admin'
-
-
-        
     return render_template('organize.html',email=email)
 
+@app.route('/<email>/myevents')
+def userEvents():
+    return ''
 
