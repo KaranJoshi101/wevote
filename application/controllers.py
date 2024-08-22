@@ -44,7 +44,7 @@ def login():
         if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
             return redirect(url_for('admin'))   #takes to '/admin' page
         rec=User.query.filter_by(email=e).first()
-        if rec:
+        if rec and rec.registered:
             if rec.pwd==p:
                 return redirect('/'+e+'/home') 
             else:
@@ -150,23 +150,62 @@ def org(email):
         t=request.form.get('title')
         d=request.form.get('desc')
         ti=request.form.get('stime')
-        sdate=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
-        
-        l=request.form.get('voters')
-        c=request.form.get('cand')
+        stime=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
         rec=User.query.filter_by(email=email).first()
         durh=request.form.get("checkextendhour")
         durm=request.form.get("checkextendminute")
         if durh:
             dur=int(request.form.get("extendhour"))
-            stime=sdate+datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),dur,0)
+            etime=stime+datetime.timedelta(hours=dur)
         else:
             dur=int(request.form.get("extendminute"))
-            stime=sdate+datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),0,dur)
+            etime=stime+datetime.timedelta(minutes=dur)
         
-        e=Event(user_id=rec.id,title=t,desc=d,time=stime,sdate=sdate,duration=dur)
+        e=Event(user_id=rec.id,title=t,desc=d,etime=etime,stime=stime)
         db.session.add(e)
         db.session.commit()
+
+        allow=request.form.get('allowcand')
+        if allow=='on':
+            candidates=request.form.get('candidates').split(',')
+            for i in candidates:
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                db.session.add(r)
+                db.session.commit()
+        
+            voters=request.form.get('voters').split(',')
+            for i in voters:
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                r=Vote(event_id=e.id,user_id=check.id,role='voter')
+                db.session.add(r)
+                db.session.commit()
+        else:
+            voters=request.form.get('vot')
+            for i in voters:
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                db.session.add(r)
+                db.session.commit()
+        return 'Event sent for Approval to the Admin'
+
+
+        
     return render_template('organize.html',email=email)
 
 
