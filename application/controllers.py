@@ -46,7 +46,7 @@ def login():
         p=request.form.get('pass')
         
         if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
-            return redirect(url_for('admin'))   #takes to '/admin' page
+            return redirect('/admin')   #takes to '/admin' page
         rec=User.query.filter_by(email=e).first()
         if rec and rec.registered:
             if rec.pwd==p:
@@ -142,6 +142,19 @@ def setPassword(email):
 def adminDashboard():
     return render_template('admin_dash.html')
 
+#url for admin approval
+@app.route('/admin/approve')
+def adminApproval():
+    events=Event.query.all()
+    return render_template('admin_approval.html',events=events)
+
+@app.route('/admin/<event_id>/reject')
+def adminRejects(event_id):
+    db.session.delete(Event.query.get(event_id))
+    db.session.commit()
+    return redirect('/admin/approve')
+
+
 #url for user dashboard
 @app.route('/<email>/home')
 def userDashboard(email):
@@ -168,7 +181,8 @@ def organizeEvents(email):
             dur=int(request.form.get("extendminute"))
             etime=stime+datetime.timedelta(minutes=dur)
         
-        e=Event(user_id=rec.id,title=t,desc=d,etime=etime,stime=stime)
+        voters=request.form.get('voters').split(',')
+        e=Event(organizerId=rec.id,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters))
         db.session.add(e)
         db.session.commit()
 
@@ -182,11 +196,11 @@ def organizeEvents(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
         
-            voters=request.form.get('voters').split(',')
+            
             for i in voters:
                 check=User.query.filter_by(email=i).first()
                 if not check:
@@ -194,11 +208,11 @@ def organizeEvents(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='voter')
+                r=Vote(eventId=e.id,userId=check.id,role='voter')
                 db.session.add(r)
                 db.session.commit()
         else:
-            voters=request.form.get('vot')
+            
             for i in voters:
                 check=User.query.filter_by(email=i).first()
                 if not check:
@@ -206,7 +220,7 @@ def organizeEvents(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
         return 'Event sent for Approval to the Admin'

@@ -18,19 +18,21 @@ class User(db.Model):
 
 class Vote(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    event_id=db.Column(db.Integer,db.ForeignKey('event.id'))
-    user_id=db.Column(db.Integer,db.ForeignKey('user.id'))
+    eventId=db.Column(db.Integer,db.ForeignKey('event.id'))
+    userId=db.Column(db.Integer,db.ForeignKey('user.id'))
     role=db.Column(db.String())
     vote=db.Column(db.Boolean,default=False)
 
 
 class Event(db.Model):
     id=db.Column(db.Integer(),primary_key=True)
-    user_id=db.Column(db.Integer(),db.ForeignKey('user.id'))
+    createTime=db.Column(db.DateTime)
+    organizerId=db.Column(db.Integer(),db.ForeignKey('user.id'))
     title=db.Column(db.String(),default='x')
     desc=db.Column(db.String(),default='x')
-    etime=db.Column(db.DateTime,nullable=False)
-    stime=db.Column(db.DateTime,nullable=False)
-    isapproved=db.Column(db.Boolean,default=False)
+    endTime=db.Column(db.DateTime,nullable=False)
+    startTime=db.Column(db.DateTime,nullable=False)
+    isApproved=db.Column(db.Boolean,default=False)
+    voterCount=db.Column(db.Integer())
     votes=db.relationship('Vote',backref='event')
     

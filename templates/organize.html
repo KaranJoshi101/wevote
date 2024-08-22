@@ -25,7 +25,7 @@
     <span>
       <p class="mb-2" style="display: inline">Choose Start of Event<p style="display: inline;color: rgb(184, 4, 4);">*</p></p>
       <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c" aria-label="Default select example" name="date">
+        <select class="form-select c" aria-label="Default select example" name="date" required>
           <option selected>Date</option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -61,7 +61,7 @@
         </select>
       </div>
       <div  class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example" name="month">
+        <select class="form-select c " aria-label="Default select example" name="month" required>
           <option selected>Month</option>
           <option value="1">Jan</option>
           <option value="2">Feb</option>
@@ -78,7 +78,7 @@
         </select>
       </div>
       <div class="col-sm-12 col-md-3 col-lg-3">
-        <select class="form-select c " aria-label="Default select example" name="year">
+        <select class="form-select c " aria-label="Default select example" name="year" required>
         <option selected>Year</option>
         <option value="2024">2024</option>
         <option value="2025">2025</option>
@@ -101,7 +101,7 @@
         <div class="form-check">
           <input class="form-check-input" type="radio" name="checkextendhour" id="flexRadioDefault1">
           <label class="form-check-label" for="flexRadioDefault1">
-            <select class="form-select c " aria-label="Default select example" name="extendhour">
+            <select class="form-select c " aria-label="Default select example" name="extendhour" required>
               
               <option value="1" selected>1 Hour</option>
               <option value="2">2 Hours</option>
@@ -133,7 +133,7 @@
         <div class="form-check mx-4">
           <input class="form-check-input" type="radio" name="checkextendminute" id="flexRadioDefault2" checked>
           <label class="form-check-label" for="flexRadioDefault2">
-            <select class="form-select c " aria-label="Default select example" name="extendminute">
+            <select class="form-select c " aria-label="Default select example" name="extendminute" required>
               
               <option value="5" selected>5 min</option>
               <option value="10">10 min</option>
@@ -162,7 +162,7 @@
     </div>
     
     <div class="input-group">
-      <span class="input-group-text">Voters</span>
+      <span class="input-group-text">Voters<p style="display: inline;color: rgb(184, 4, 4);">*</p></span>
       <textarea class="form-control" aria-label="With textarea" rows="5" name="voters" placeholder="enter voters email-ids separated with commas" required></textarea>
     </div>
   <button type="submit" class="btn btn-primary mt-3" name="request">Request for Event</button>
