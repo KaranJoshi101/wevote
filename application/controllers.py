@@ -142,11 +142,26 @@ def setPassword(email):
 def adminDashboard():
     return render_template('admin_dash.html')
 
-#url for admin approval
-@app.route('/admin/approve')
-def adminApproval():
-    events=Event.query.all()
-    return render_template('admin_approval.html',events=events)
+#url for admin review
+@app.route('/admin/review')
+def adminReview():
+    events=Event.query.filter_by(isApproved=0).all()
+    return render_template('admin_review.html',events=events)
+
+#url for admin approved
+@app.route('/admin/<int:event_id>/approve')
+def adminApprove(event_id):
+    record=Event.query.get(event_id)
+    record.isApproved=True
+    db.session.commit()
+    return redirect('/admin/review')
+
+
+#url for admin search of user
+@app.route('/admin/<int:userId>/watchUser')
+def adminWatchUser(userId):
+    user=User.query.get(userId)
+    return render_template('admin_watch_user.html',user=user)
 
 
 @app.route('/event_id/delete')

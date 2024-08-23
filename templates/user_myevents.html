@@ -55,7 +55,7 @@
                     <td>{{event.desc}}</td>
                     <td>{{event.startTime}}</td>
                     <td>{{event.endTime}}</td>
-                    {% if event.isApproved=='True' %}
+                    {% if event.isApproved==1 %}
                         <td>Approved</td>
                     {%else%}
                         <td>To Be Reviewed</td>
