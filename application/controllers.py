@@ -242,7 +242,7 @@ def organizeEvents(email):
                 r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
-        return 'Event sent for Approval to the Admin'
+        return render_template('organize_thank_you.html',email=email)
     return render_template('organize.html',email=email)
 
 @app.route('/<email>/myevents')
