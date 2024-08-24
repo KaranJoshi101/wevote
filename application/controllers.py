@@ -1,4 +1,4 @@
-#otp function
+#otp generating function
 def Otp():
     import random
     k=0
@@ -6,6 +6,7 @@ def Otp():
         k=k*10+random.randrange(0,9)
     return k
 
+#separates username from email
 def Username(e):
     if 'www.' in e:
         e=e[4:]
@@ -17,8 +18,11 @@ def Username(e):
     return newe
 
 
+#methods imported from flask module
 from flask import Flask,render_template, redirect, request,url_for
 from flask import current_app as app
+
+#models content imported in this file
 from .models import *
 
 
@@ -29,12 +33,12 @@ from .models import *
 
 #home page
 @app.route('/')
-def home():
+def homePage():
     return render_template('index.html')
 
 
 
-#domain for login page
+#url for login page
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method=='POST':
@@ -42,7 +46,7 @@ def login():
         p=request.form.get('pass')
         
         if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
-            return redirect(url_for('admin'))   #takes to '/admin' page
+            return redirect('/admin')   #takes to '/admin' page
         rec=User.query.filter_by(email=e).first()
         if rec and rec.registered:
             if rec.pwd==p:
@@ -56,9 +60,10 @@ def login():
     
     return render_template('login.html') 
 
-#domain for register page
+
+#url for register page
 @app.route('/register',methods=['GET','POST'])
-def register():
+def userRegister():
     if request.method=='POST':
         email=request.form.get('email')
         check=User.query.filter_by(email=email,registered=True).first()
@@ -67,8 +72,9 @@ def register():
         return redirect('/'+email+'/verification')
     return render_template('register1.html')
 
+#url for verifying email
 @app.route('/<email>/verification',methods=['GET','POST'])
-def verify(email):
+def verifyEmail(email):
     if request.method=='POST':
         otp=request.form.get('one')+request.form.get('two')+request.form.get('three')+request.form.get('four')+request.form.get('five')+request.form.get('six')
         set=User.query.filter_by(email=email).first()
@@ -116,8 +122,9 @@ def verify(email):
     return render_template('register2.html',email=email)
 
 
+#url for setting password after verification
 @app.route('/<email>/setpassword',methods=['GET','POST'])
-def setpassword(email):
+def setPassword(email):
     if request.method=='POST':
         p=request.form.get('pass')
         n=request.form.get('name')
@@ -130,21 +137,53 @@ def setpassword(email):
 
     return render_template('register3.html',email=email)
 
-#domain for admin dashboard
+#url for admin dashboard
 @app.route('/admin')
-def admin():
+def adminDashboard():
     return render_template('admin_dash.html')
 
-#domain for user dashboard
+#url for admin review
+@app.route('/admin/review')
+def adminReview():
+    events=Event.query.filter_by(isApproved=0).all()
+    return render_template('admin_review.html',events=events)
+
+#url for admin approved
+@app.route('/admin/<int:event_id>/approve')
+def adminApprove(event_id):
+    record=Event.query.get(event_id)
+    record.isApproved=True
+    db.session.commit()
+    return redirect('/admin/review')
+
+
+#url for admin search of user
+@app.route('/admin/<int:userId>/watchUser')
+def adminWatchUser(userId):
+    user=User.query.get(userId)
+    return render_template('admin_watch_user.html',user=user)
+
+
+@app.route('/event_id/delete')
+def deleteEvent(event_id):
+    db.session.delete(Event.query.get(event_id))
+    db.session.commit()
+@app.route('/<event_id>/reject')
+def adminRejects(event_id):
+    deleteEvent(event_id)
+    return redirect('/admin/approve')
+
+
+#url for user dashboard
 @app.route('/<email>/home')
-def user(email):
+def userDashboard(email):
     rec=User.query.filter_by(email=email).first()
     return render_template('user_dash.html',email=email,name=rec.name)
 
 
-#domain for organize
+#url for organize
 @app.route('/<email>/organize',methods=['GET','POST'])
-def org(email):
+def organizeEvents(email):
     if request.method=='POST':
         import datetime
         t=request.form.get('title')
@@ -161,7 +200,8 @@ def org(email):
             dur=int(request.form.get("extendminute"))
             etime=stime+datetime.timedelta(minutes=dur)
         
-        e=Event(user_id=rec.id,title=t,desc=d,etime=etime,stime=stime)
+        voters=request.form.get('voters').split(',')
+        e=Event(organizerId=rec.id,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters))
         db.session.add(e)
         db.session.commit()
 
@@ -175,11 +215,11 @@ def org(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
         
-            voters=request.form.get('voters').split(',')
+            
             for i in voters:
                 check=User.query.filter_by(email=i).first()
                 if not check:
@@ -187,11 +227,11 @@ def org(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='voter')
+                r=Vote(eventId=e.id,userId=check.id,role='voter')
                 db.session.add(r)
                 db.session.commit()
         else:
-            voters=request.form.get('vot')
+            
             for i in voters:
                 check=User.query.filter_by(email=i).first()
                 if not check:
@@ -199,13 +239,15 @@ def org(email):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(event_id=e.id,user_id=check.id,role='candidate')
+                r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
         return 'Event sent for Approval to the Admin'
-
-
-        
     return render_template('organize.html',email=email)
 
+@app.route('/<email>/myevents')
+def userEvents(email):
+    user=User.query.filter_by(email=email).first()
+    events=Event.query.filter_by(organizerId=user.id).all()
+    return render_template('user_myevents.html',events=events,name=user.name,email=email)
 
