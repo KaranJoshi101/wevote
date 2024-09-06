@@ -1,0 +1,36 @@
+let eventDate=new Date()
+let startYear=startDate.innerText.slice(13,17);
+let startMonth=startDate.innerText.slice(18,20);
+let startDat=startDate.innerText.slice(22,24);
+let startHour=startDate.innerText.slice(25,27);
+let startMin=startDate.innerText.slice(28,30);
+let startSec=startDate.innerText.slice(31,33);
+async function getData() {
+const url="http://worldtimeapi.org/api/timezone/Asia/Kolkata";
+try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const currentDate = await response.json();
+    let currentYear=currentDate.utc_datetime.slice(0,4);
+    let currentMonth=currentDate.utc_datetime.slice(5,7);
+    let currentDat=currentDate.utc_datetime.slice(8,10);
+    let currentHour=currentDate.utc_datetime.slice(11,13);
+    let currentMin=currentDate.utc_datetime.slice(14,16);
+    let currentSec=currentDate.utc_datetime.slice(17,19);
+    
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+
+console.dir(startDate);
+let min=0;
+let hour=0;
+let days=0;
+
+
+

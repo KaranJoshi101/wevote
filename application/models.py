@@ -34,5 +34,8 @@ class Event(db.Model):
     startTime=db.Column(db.DateTime,nullable=False)
     isApproved=db.Column(db.Boolean,default=False)
     voterCount=db.Column(db.Integer())
+    durHour=db.Column(db.Integer())
+    durMin=db.Column(db.Integer())
     votes=db.relationship('Vote',backref='event')
+    
     
