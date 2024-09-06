@@ -1,0 +1,13 @@
+.event-box {
+    background-color: burlywood;
+    height: 400px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+ .grid-item {
+    order: 1;
+ }
