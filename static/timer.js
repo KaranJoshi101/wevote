@@ -2,40 +2,55 @@ let timer=document.querySelectorAll(".timer");
 let startDates=document.querySelectorAll(".startDate");
 let dat=new Date();
 let cols=[];
+class Timer{
+    constructor(d,h,m,s){
+        this.days=d;
+        this.hours=h;
+        this.min=m;
+        this.sec=s;
+        this.coeff="Starts in "; 
+    }
 
-for(let i=0;i<startDates.length;i++){
-     cols[i]=[1,2,3,4];
 }
 
-console.log(typeof cols);
+
 var i=0;
 for(const startDate of startDates){
-    
-    let sdat=new Date(startDate.innerText.slice(13,33));
-    let duration=sdat-Date.now();
-    cols[i][3] = Math.floor(duration / (1000 * 60 * 60 * 24));
-    cols[i][2] = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    cols[i][1] = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-    cols[i][0] = Math.floor((duration % (1000 * 60)) / 1000);
+    let duration=new Date(startDate.innerText.slice(13,33))-Date.now();
+    cols[i] = new Timer(Math.floor(duration / (1000 * 60 * 60 * 24)),Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60)),Math.floor((duration % (1000 * 60)) / 1000))
     i++;
 }
 i=0;
     setInterval(function(){
-    
-        cols[i][0]--;
-        if(cols[i][0]==-1){
-            cols[i][0]=59;
-            cols[i][1]--;
-            if(cols[i][1]==-1){
-                cols[i][1]=59;
-                cols[i][2]--;
+        if(cols[i].days==0 && cols[i].hours==0 && cols[i].min==0 && cols[i].sec==0){
+        
+            cols[i].sec=60;
+            let dur=startDates[i].innerText.slice(44,);
+            if("minutes"==dur.slice(3,)){
+                cols[i].min=dur.slice(0,3);
             }
-            if(cols[i][2]==-1){
-                cols[i][2]=23;
-                cols[i][3]--;
+            else{
+                cols[i].hours=dur.slice(0,3);
+            }
+            cols[i].coeff="Ends in ";
+            timer[i].style.color="red";
+        }
+        cols[i].sec--;
+        if(cols[i].sec==-1){
+            cols[i].sec=59;
+            cols[i].min--;
+            if(cols[i].min==-1){
+                cols[i].min=59;
+                cols[i].hours--;
+            }
+            if(cols[i].hours==-1){
+                cols[i].hours=23;
+                cols[i].days--;
             }
         }
-        timer[i].innerText="Starts in "+cols[i][3]+"d "+cols[i][2]+"h "+cols[i][1]+"min "+cols[i][0]+"s";
+       
+        timer[i].innerText=cols[i].coeff+cols[i].days+"d "+cols[i].hours+"h "+cols[i].min+"min "+cols[i].sec+"s";
+      
        
     
     
