@@ -37,5 +37,4 @@ class Event(db.Model):
     durHour=db.Column(db.Integer())
     durMin=db.Column(db.Integer())
     votes=db.relationship('Vote',backref='event')
-    
-    
+

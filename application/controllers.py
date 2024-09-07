@@ -171,7 +171,7 @@ def deleteEvent(event_id):
 @app.route('/<event_id>/reject')
 def adminRejects(event_id):
     deleteEvent(event_id)
-    return redirect('/admin/approve')
+    return redirect('/admin/review')
 
 
 #url for user dashboard
