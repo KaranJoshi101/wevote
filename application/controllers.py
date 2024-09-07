@@ -17,6 +17,12 @@ def Username(e):
         newe+=i
     return newe
 
+#delete event using event_id
+def deleteEvent(event_id):
+    db.session.delete(Event.query.get(event_id))
+    db.session.commit()
+
+
 
 #methods imported from flask module
 from flask import Flask,render_template, redirect, request,url_for
@@ -50,7 +56,7 @@ def login():
         rec=User.query.filter_by(email=e).first()
         if rec and rec.registered:
             if rec.pwd==p:
-                return redirect('/'+e+'/home') 
+                return redirect(f'/{rec.id}/home') 
             else:
                 return render_template('login-wrong-pass.html')
         else:
@@ -133,7 +139,7 @@ def setPassword(email):
         rec.name=n
         rec.registered=True
         db.session.commit()
-        return redirect('/'+email+'/home')
+        return redirect(f'/{rec.id}/home')
 
     return render_template('register3.html',email=email)
 
@@ -164,10 +170,8 @@ def adminWatchUser(userId):
     return render_template('admin_watch_user.html',user=user)
 
 
-@app.route('/event_id/delete')
-def deleteEvent(event_id):
-    db.session.delete(Event.query.get(event_id))
-    db.session.commit()
+
+
 @app.route('/<event_id>/reject')
 def adminRejects(event_id):
     deleteEvent(event_id)
@@ -175,22 +179,22 @@ def adminRejects(event_id):
 
 
 #url for user dashboard
-@app.route('/<email>/home')
-def userDashboard(email):
-    rec=User.query.filter_by(email=email).first()
-    return render_template('user_dash.html',email=email,name=rec.name)
+@app.route('/<userId>/home')
+def userDashboard(userId):
+    rec=User.query.get(userId)
+    return render_template('user_dash.html',rec=rec)
 
 
 #url for organize
-@app.route('/<email>/organize',methods=['GET','POST'])
-def organizeEvents(email):
+@app.route('/<userId>/organize',methods=['GET','POST'])
+def organizeEvents(userId):
     if request.method=='POST':
         import datetime
         t=request.form.get('title')
         d=request.form.get('desc')
         ti=request.form.get('stime')
         stime=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
-        rec=User.query.filter_by(email=email).first()
+        rec=User.query.get(userId)
         durh=request.form.get("checkextendhour")
         durm=request.form.get("checkextendminute")
         if durh:
@@ -203,7 +207,7 @@ def organizeEvents(email):
             etime=stime+datetime.timedelta(minutes=durMin)
         
         voters=request.form.get('voters').split(',')
-        e=Event(organizerId=rec.id,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin)
+        e=Event(organizerId=userId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin)
         db.session.add(e)
         db.session.commit()
 
@@ -244,12 +248,18 @@ def organizeEvents(email):
                 r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
-        return render_template('organize_thank_you.html',email=email)
-    return render_template('organize.html',email=email)
+        return render_template('organize_thank_you.html',userId=userId)
+    return render_template('organize.html',userId=userId)
 
-@app.route('/<email>/myevents')
-def userEvents(email):
-    user=User.query.filter_by(email=email).first()
-    events=Event.query.filter_by(organizerId=user.id).all()
-    return render_template('user_myevents.html',events=events,name=user.name,email=email)
+@app.route('/<userId>/myevents')
+def userEvents(userId):
+    user=User.query.get(userId)
+    events=Event.query.filter_by(organizerId=userId).all()
+    return render_template('user_myevents.html',events=events,user=user)
 
+
+@app.route('/<userId>/<event_id>/explore')
+def exploreEvent(userId,event_id):
+    event=Event.query.get(event_id)
+    user=User.query.get(userId)
+    return render_template('explore-events.html',event=event,user=user)
