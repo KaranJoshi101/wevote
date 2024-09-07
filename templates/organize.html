@@ -92,65 +92,81 @@
         <input type="time" class="form-control" name="stime" />
       </div>
     </div>
-      
     </span>
-
-    <span>
-      <p class="mb-2 mt-3 ">Duration of Event</p>
-      <div style="display: flex;align-items: center;">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="checkextendhour" id="flexRadioDefault1">
-          <label class="form-check-label" for="flexRadioDefault1">
-            <select class="form-select c " aria-label="Default select example" name="extendhour" required>
-              
-              <option value="1" selected>1 Hour</option>
-              <option value="2">2 Hours</option>
-              <option value="3">3 Hours</option>
-              <option value="4">4 Hours</option>
-              <option value="5">5 Hours</option>
-              <option value="6">6 Hours</option>
-              <option value="7">7 Hours</option>
-              <option value="8">8 Hours</option>
-              <option value="9">9 Hours</option>
-              <option value="10">10 Hours</option>
-              <option value="11">11 Hours</option>
-              <option value="12">12 Hours</option>
-              <option value="13">13 Hours</option>
-              <option value="14">14 Hours</option>
-              <option value="15">15 Hours</option>
-              <option value="16">16 Hours</option>
-              <option value="17">17 Hours</option>
-              <option value="18">18 Hours</option>
-              <option value="19">19 Hours</option>
-              <option value="20">20 Hours</option>
-              <option value="21">21 Hours</option>
-              <option value="22">22 Hours</option>
-              <option value="23">23 Hours</option>
-              <option value="24">24 Hours</option>
-            </select>
-          </label>
-        </div>
-        <div class="form-check mx-4">
-          <input class="form-check-input" type="radio" name="checkextendminute" id="flexRadioDefault2" checked>
-          <label class="form-check-label" for="flexRadioDefault2">
-            <select class="form-select c " aria-label="Default select example" name="extendminute" required>
-              
-              <option value="5" selected>5 min</option>
-              <option value="10">10 min</option>
-              <option value="15">15 min</option>
-              <option value="20">20 min</option>
-              <option value="25">25 min</option>
-              <option value="30">30 min</option>
-              <option value="35">35 min</option>
-              <option value="40">40 min</option>
-              <option value="45">45 min</option>
-              <option value="50">50 min</option>
-              <option value="55">55 min</option>
-            </select>
-          </label>
-        </div>
+    <br><br>
+    <p style="line-height: 10px;" >Duration of Event</p>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="time" id="flexRadioDefault1" value="option1" checked>
+      <label class="form-check-label" for="flexRadioDefault1">
+        <select class="form-select c " aria-label="Default select example" name="extendhour" >
+          <option value="1" selected>1 Hour</option>
+          <option value="2">2 Hours</option>
+          <option value="3">3 Hours</option>
+          <option value="4">4 Hours</option>
+          <option value="5">5 Hours</option>
+          <option value="6">6 Hours</option>
+          <option value="7">7 Hours</option>
+          <option value="8">8 Hours</option>
+          <option value="9">9 Hours</option>
+          <option value="10">10 Hours</option>
+          <option value="11">11 Hours</option>
+          <option value="12">12 Hours</option>
+          <option value="13">13 Hours</option>
+          <option value="14">14 Hours</option>
+          <option value="15">15 Hours</option>
+          <option value="16">16 Hours</option>
+          <option value="17">17 Hours</option>
+          <option value="18">18 Hours</option>
+          <option value="19">19 Hours</option>
+          <option value="20">20 Hours</option>
+          <option value="21">21 Hours</option>
+          <option value="22">22 Hours</option>
+          <option value="23">23 Hours</option>
+          <option value="24">24 Hours</option>
+        </select>
+      </label>
     </div>
-    </span>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="time" id="flexRadioDefault2" value="option2">
+      <label class="form-check-label" for="flexRadioDefault2">
+        <select class="form-select c " aria-label="select example" name="extendminute"> 
+          <option value="5" selected>5 min</option>
+          <option value="10">10 min</option>
+          <option value="15">15 min</option>
+          <option value="20">20 min</option>
+          <option value="25">25 min</option>
+          <option value="30">30 min</option>
+          <option value="35">35 min</option>
+          <option value="40">40 min</option>
+          <option value="45">45 min</option>
+          <option value="50">50 min</option>
+          <option value="55">55 min</option>
+        </select>
+      </label>
+    </div>
+
+    </br><br>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+      <label class="form-check-label" for="flexSwitchCheckDefault">Public Event</label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="no-of-winner">
+      Select if number of Winner is greater than 1
+      <label class="form-check-label" for="no-of-winner">
+        <select class="form-select form-select-sm" aria-label="Small select example" id="winner-select">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+    </div>
+
+
 
    
     <div class="input-group mb-3 mt-3">
@@ -165,7 +181,7 @@
       <span class="input-group-text">Voters<p style="display: inline;color: rgb(184, 4, 4);">*</p></span>
       <textarea class="form-control" aria-label="With textarea" rows="5" name="voters" placeholder="enter voters email-ids separated with commas" required></textarea>
     </div>
-  <button type="submit" class="btn btn-primary mt-3" name="request">Request for Event</button>
+  <button type="submit" class="btn btn-primary mt-3" name="request" >Request for Event</button>
 
   
 </form>
