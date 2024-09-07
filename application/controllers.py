@@ -171,7 +171,7 @@ def deleteEvent(event_id):
 @app.route('/<event_id>/reject')
 def adminRejects(event_id):
     deleteEvent(event_id)
-    return redirect('/admin/approve')
+    return redirect('/admin/review')
 
 
 #url for user dashboard
@@ -194,14 +194,16 @@ def organizeEvents(email):
         durh=request.form.get("checkextendhour")
         durm=request.form.get("checkextendminute")
         if durh:
-            dur=int(request.form.get("extendhour"))
-            etime=stime+datetime.timedelta(hours=dur)
+            durHour=int(request.form.get("extendhour"))
+            durMin=0
+            etime=stime+datetime.timedelta(hours=durHour)
         else:
-            dur=int(request.form.get("extendminute"))
-            etime=stime+datetime.timedelta(minutes=dur)
+            durMin=int(request.form.get("extendminute"))
+            durHour=0
+            etime=stime+datetime.timedelta(minutes=durMin)
         
         voters=request.form.get('voters').split(',')
-        e=Event(organizerId=rec.id,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters))
+        e=Event(organizerId=rec.id,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin)
         db.session.add(e)
         db.session.commit()
 
