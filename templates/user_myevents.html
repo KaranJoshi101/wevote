@@ -20,7 +20,7 @@
         <div id="about" class="active">
           <h1>My Events</h1>
     {% if events|length == 0 %}
-        <p>No Events For You. Don't Worry! <a href="/{{email}}/organize">Let's Create One</a></p>
+        <p>No Events For You. Don't Worry! <a href="/{{user.id}}/organize">Let's Create One</a></p>
     {%else%}
     <div class="container">
       <div class="album py-5 bg-body">
@@ -42,7 +42,7 @@
                   <p class="card-text">{{event.desc}}
                   <p class="startDate">Start Date : {{event.startTime}} <br> Duration : {%if event.durHour%}{{event.durHour}} hours {%else%}{{event.durMin}} minutes {%endif%}</p>
                   <div class="d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn btn-primary" style="width:80%">Explore</button>
+                    <a href="/{{user.id}}/{{event.id}}/explore" type="button" style="width:80%" class="btn btn-primary" >Explore</a>
                   </div>
                 </div>
               </div>

@@ -16,7 +16,10 @@ class Timer{
 
 var i=0;
 for(const startDate of startDates){
-    let duration=new Date(startDate.innerText.slice(13,33))-Date.now();
+    let ddate=new Date(startDate.innerText.slice(13,33));
+    startDate.innerHTML="<p class='startDate'>Date: "+ddate.toDateString()+"<br>Time: "+ddate.toLocaleTimeString()+"<br>"+startDate.innerText.slice(33,)+"</p>";
+    
+    let duration=ddate-Date.now();
     cols[i] = new Timer(Math.floor(duration / (1000 * 60 * 60 * 24)),Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60)),Math.floor((duration % (1000 * 60)) / 1000))
     i++;
 }
