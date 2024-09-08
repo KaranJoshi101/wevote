@@ -3,6 +3,8 @@ let date=new Date(datetime.innerText.slice(7,26));
 console.log(datetime.innerText)
 datetime.innerHTML="<p class='startDate'>Date: "+date.toDateString()+"<br>Time: "+date.toLocaleTimeString()+"</br>"+datetime.innerText.slice(42,)+"</p>";
 let timer=document.querySelector("#timer");
+let dur=document.querySelector("#dur");
+let num="";
 let duration=date-Date.now();
 class Timer{
     constructor(d,h,m,s){
@@ -15,17 +17,29 @@ class Timer{
 
 }
 let cols=new Timer(Math.floor(duration / (1000 * 60 * 60 * 24)),Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60)),Math.floor((duration % (1000 * 60)) / 1000));
-setInterval(function(){
-    if(cols.days==0 && cols.hours==0 && cols.min==0 && cols.sec==0){
+var myInterval=setInterval(function(){
     
+    if(cols.days==0 && cols.hours==0 && cols.min==0 && cols.sec==0){
+            
         cols.sec=60;
-        let dur=startDates.innerText.slice(44,);
-        if("minutes"==dur.slice(3,)){
-            cols.min=dur.slice(0,3);
+        
+        
+        for(j of dur.innerText){
+            
+            if(j==' ')
+                break;
+            num+=j;
+        }
+        
+        if(dur.innerText.includes("minutes")){
+            cols.min=Number(num)-1;
+            
         }
         else{
-            cols.hours=dur.slice(0,3);
+            cols.min=59;
+            cols.hours=Number(num)-1;
         }
+        num="";
         cols.coeff="Ends in ";
         timer.style.color="red";
     }
@@ -42,7 +56,6 @@ setInterval(function(){
             cols.days--;
         }
     }
-   
     timer.innerText=cols.coeff+cols.days+"d "+cols.hours+"h "+cols.min+"min "+cols.sec+"s";
   
    

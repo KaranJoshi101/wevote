@@ -22,11 +22,8 @@
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-start btn-group" role="group">
         {%if event.organizerId==user.id%}
-        <button type="button" class="btn btn-warning btn-sm btn-lg me-md">Update</button>
-        <button type="button" class="btn btn-danger btn-sm btn-lg me-md">Delete</button>
-        {%else%}
-        <button type="button" class="btn btn-warning btn-sm btn-lg me-md" style="visibility: hidden;">Update</button>
-        <button type="button" class="btn btn-danger btn-sm btn-lg me-md" style="visibility: hidden;">Delete</button>
+        <a type="button" class="btn btn-warning btn-sm btn-lg me-md">Update</a>
+        <a type="button" class="btn btn-danger btn-sm btn-lg me-md" href="/{{user.id}}/{{event.id}}/delete">Delete</a>
         {%endif%}
         
       </div>
@@ -39,13 +36,20 @@
       <div class="col-lg-8">
           <small style=" color: #0a694b; font-weight: 700;font-size: xx-large;" id="timer"></small>
           <p class="fw-bold text-body-emphasis" style="font-size:large;" id="datetime">Date : {{event.startTime}} <br> Time : 12:22 AM <br> Duration : {%if event.durHour%}{{event.durHour}} hours {%else%}{{event.durMin}} minutes {%endif%} </p>
+          <p id="dur" style="display:none;">{%if event.durHour%}{{event.durHour}} hours{%else%}{{event.durMin}} minutes{%endif%}</p>
           <p class="lead">{{event.desc}}</p>
       </div>
     </div>
     {%for v in vote%}
     {%if v.userId==user.id and v.role=="candidate"%}
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5" id="r-cand"">
-      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Register as a Candidate</button>
+      {%if v.role=='candidate'%}
+      {%if v.candidature==-1%}
+      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/{{user.id}}/{{event.id}}/register">Register as a Candidate</a>
+      {%else%}
+      <button class="btn btn-success">Successfully Registered</button>
+      {%endif%}
+      {%endif%}      
     </div>
     {%endif%}
     {%endfor%}
@@ -58,26 +62,27 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
           {%for v in vote%}
          <!-- for loop start -->
-            {%if v.role=="candidate" and v.candidature==1%}
-          <div class="col">
-            <div class="card shadow-sm">
-              <img src="/static/candidate_default.png" alt="">
-              <div class="card-body">
-                <h5 style="font-weight: 700;">Niranjan Raj(f)</h5>
-                <button  class="btn btn-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#demo">Ambition</button>
-                <div id="demo" class="collapse">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                </div>
-                
-                <div class="d-flex justify-content-between align-items-center" >
-                  <div id="enrollment">
-                    23/11/EC/011
+            {%if v.role=="candidate" and v.candidature>=0%}
+              {%for c in cand%}
+                {%if v.userId==c.id%}
+                  <div class="col">
+                    <div class="card shadow-sm">
+                      <img src="/static/candidate_default.png" alt="">
+                      <div class="card-body">
+                        <h5 style="font-weight: 700;">{{c.name}}</h5>
+                        <button  class="btn btn-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#demo{{loop.index}}">Ambition</button>
+                        <div id="demo{{loop.index}}" class="collapse">
+                          <p class="card-text">{{v.motive}}</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center" >
+                          <small class="text-body-secondary">{{v.branch}}</small>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <small class="text-body-secondary">CSE</small>
-                </div>
-              </div>
-            </div>
-          </div>
+                  {%endif%}
+                {%endfor%}
           <!-- for loop end -->
            {%endif%}
           {%endfor%}
@@ -90,7 +95,7 @@
 
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
-      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Vote</button>
+      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="Vote Button">Vote</button>
     </div>
 
   </div>

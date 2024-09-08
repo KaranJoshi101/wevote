@@ -1,8 +1,14 @@
+/* Page content */
+body{
+  margin:0px;
+  padding:0px;
+}
+.content {
+  padding: 16px;
+}
 
   
   .sidebar {
-    margin: 0%;
-    padding: 0;
     width: 200px;
     background-color: #f1f1f1;
     position:fixed;
@@ -49,4 +55,16 @@
     }
   }
  
+  #organize{
+     justify-content: center; 
+     border: 5px solid rgb(187, 182, 182);
+     padding: 20px 20px 20px 20px; 
+     border-radius: 1%;
+     display: none;
+     margin-bottom:10px;
+  }
+ 
+  #allevents{
+     display:none;
+  }
   

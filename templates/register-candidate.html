@@ -14,29 +14,36 @@
       <h3 style="text-align: center;font-weight: 700;">Register as a Candidate</h3>
       <p style="text-align: center;font-size: smaller;color: rgb(99, 97, 97);">Complete the below fields to register as a candidate.</p>
     </div>
-    <div class="mb-3">
-      <label for="validationCustom01" class="form-label" style="margin-bottom: 1px;">Name<p style="display: inline;color: rgb(184, 4, 4);">*</p></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Your Name" name="title" required>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Email : </label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value={{user.email}}>
+      </div>
+      <label for="staticName" class="col-sm-2 col-form-label">Candidate Name : </label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticName" value={{user.name}}>
+      </div>
     </div>
+    
 
 
     <div class="input-group mb-2">
-      <input type="file" class="form-control" id="inputGroupFile02">
+      <input type="file" class="form-control" id="inputGroupFile02" name="dp">
     </div>
 
     <div class="mb-3 mt-3">
       <label for="exampleFormControlTextarea1" class="form-label">Add Your Motive/ Your Plans</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="desc"></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="motive"></textarea>
     </div>
     
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <label for="validationCustom01" class="form-label" style="margin-bottom: 1px;">Branch<p style="display: inline;color: rgb(184, 4, 4);">*</p></label>
-                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Branch" name="title" required>
+                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Branch" name="branch" required>
             </div>
             <div class="mt-4">
-                <select class="form-select c" aria-label="Default select example" name="date" required>
+                <select class="form-select c" aria-label="Default select example" name="gender" required>
                   <option selected>Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -46,7 +53,7 @@
         </div>
 
 
-  <button type="submit" class="btn btn-primary mt-3" name="request" >Register as a Candidate</button>
+  <button type="submit" class="btn btn-primary mt-3" >Register as a Candidate</button>
 
   
 </form>
