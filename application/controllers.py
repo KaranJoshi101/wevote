@@ -176,10 +176,15 @@ def adminWatchUser(userId):
 
 
 
-@app.route('/<event_id>/reject')
+@app.route('/admin/<event_id>/reject')
 def adminRejects(event_id):
     deleteEvent(event_id)
     return redirect('/admin/review')
+
+@app.route('/<userId>/<eventId>/delete')
+def userDelete(userId,eventId):
+    deleteEvent(eventId)
+    return redirect(f'/{userId}/home')
 
 
 #url for user dashboard
@@ -192,9 +197,8 @@ def userDashboard(userId):
         ti=request.form.get('stime')
         stime=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
         rec=User.query.get(userId)
-        durh=request.form.get("checkextendhour")
-        durm=request.form.get("checkextendminute")
-        if durh:
+        durh=request.form.get('flexRadioDefault')
+        if durh=="durh":
             durHour=int(request.form.get("extendhour"))
             durMin=0
             etime=stime+datetime.timedelta(hours=durHour)
@@ -202,16 +206,19 @@ def userDashboard(userId):
             durMin=int(request.form.get("extendminute"))
             durHour=0
             etime=stime+datetime.timedelta(minutes=durMin)
-        
+        print(durHour,durMin)
         voters=request.form.get('voters').split(',')
         e=Event(organizerId=userId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin)
         db.session.add(e)
         db.session.commit()
 
         allow=request.form.get('allowcand')
+        organizerEmail=User.query.get(userId).email
         if allow=='on':
             candidates=request.form.get('candidates').split(',')
             for i in candidates:
+                if i==organizerEmail:
+                    continue
                 check=User.query.filter_by(email=i).first()
                 if not check:
                     newregistration=User(email=i)
@@ -224,6 +231,8 @@ def userDashboard(userId):
         
             
             for i in voters:
+                if i==organizerEmail:
+                    continue
                 check=User.query.filter_by(email=i).first()
                 if not check:
                     newregistration=User(email=i)
@@ -236,6 +245,8 @@ def userDashboard(userId):
         else:
             
             for i in voters:
+                if i==organizerEmail:
+                    continue
                 check=User.query.filter_by(email=i).first()
                 if not check:
                     newregistration=User(email=i)
@@ -245,10 +256,12 @@ def userDashboard(userId):
                 r=Vote(eventId=e.id,userId=check.id,role='candidate')
                 db.session.add(r)
                 db.session.commit()
+        v=Vote(eventId=e.id,userId=userId,role='organizer')
+        db.session.add(v)
+        db.session.commit()
         return render_template('organize_thank_you.html',userId=userId)
     user=User.query.get(userId)
     events=[]
-    print(user.votes)
     for v in user.votes:
         events+=[Event.query.get(v.eventId)]
     return render_template('user_myevents.html',user=user,events=events)
@@ -257,6 +270,26 @@ def userDashboard(userId):
 @app.route('/<userId>/<eventId>/explore')
 def exploreEvent(userId,eventId):
     event=Event.query.get(eventId)
+    cand=[]
     user=User.query.get(userId)
     vote=event.votes
-    return render_template('explore-events.html',event=event,user=user,vote=vote)
+    for v in vote:
+        if v.candidature==0:
+            cand+=[User.query.get(v.userId)]
+    return render_template('explore-events.html',event=event,user=user,vote=vote,cand=cand)
+
+@app.route('/<userId>/<eventId>/register',methods=['GET','POST'])
+def registerCandidate(userId,eventId):
+    if request.method=='POST':
+        motive=request.form.get("motive")
+        branch=request.form.get("branch")
+        gender=request.form.get("gender")
+        v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
+        v.branch=branch
+        v.motive=motive
+        v.gender=gender
+        v.candidature=0
+        db.session.commit()
+        return redirect(f'/{userId}/{eventId}/explore')
+    u=User.query.get(userId)
+    return render_template('register-candidate.html',user=u)

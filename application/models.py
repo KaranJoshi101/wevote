@@ -21,7 +21,10 @@ class Vote(db.Model):
     eventId=db.Column(db.Integer,db.ForeignKey('event.id'))
     userId=db.Column(db.Integer,db.ForeignKey('user.id'))
     role=db.Column(db.String())
-    candidature=db.Column(db.Boolean(),default=False)
+    candidature=db.Column(db.Integer,default=-1)
+    motive=db.Column(db.String())
+    branch=db.Column(db.String())
+    gender=db.Column(db.String())
     vote=db.Column(db.Boolean,default=False)
 
 
