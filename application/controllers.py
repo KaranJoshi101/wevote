@@ -19,7 +19,11 @@ def Username(e):
 
 #delete event using event_id
 def deleteEvent(event_id):
-    db.session.delete(Event.query.get(event_id))
+    e=Event.query.get(event_id)
+    v=e.votes
+    db.session.delete(e)
+    for i in v:
+        db.session.delete(i)
     db.session.commit()
 
 
@@ -179,15 +183,8 @@ def adminRejects(event_id):
 
 
 #url for user dashboard
-@app.route('/<userId>/home')
+@app.route('/<userId>/home',methods=['GET','POST'])
 def userDashboard(userId):
-    rec=User.query.get(userId)
-    return render_template('user_dash.html',rec=rec)
-
-
-#url for organize
-@app.route('/<userId>/organize',methods=['GET','POST'])
-def organizeEvents(userId):
     if request.method=='POST':
         import datetime
         t=request.form.get('title')
@@ -249,17 +246,17 @@ def organizeEvents(userId):
                 db.session.add(r)
                 db.session.commit()
         return render_template('organize_thank_you.html',userId=userId)
-    return render_template('organize.html',userId=userId)
-
-@app.route('/<userId>/myevents')
-def userEvents(userId):
     user=User.query.get(userId)
-    events=Event.query.filter_by(organizerId=userId).all()
-    return render_template('user_myevents.html',events=events,user=user)
+    events=[]
+    print(user.votes)
+    for v in user.votes:
+        events+=[Event.query.get(v.eventId)]
+    return render_template('user_myevents.html',user=user,events=events)
 
 
-@app.route('/<userId>/<event_id>/explore')
-def exploreEvent(userId,event_id):
-    event=Event.query.get(event_id)
+@app.route('/<userId>/<eventId>/explore')
+def exploreEvent(userId,eventId):
+    event=Event.query.get(eventId)
     user=User.query.get(userId)
-    return render_template('explore-events.html',event=event,user=user)
+    vote=event.votes
+    return render_template('explore-events.html',event=event,user=user,vote=vote)

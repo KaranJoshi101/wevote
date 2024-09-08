@@ -1,7 +1,4 @@
-body {
-    font-family: "Lato", sans-serif;
-    margin: 0%;
-  }
+
   
   .sidebar {
     margin: 0%;
@@ -21,12 +18,12 @@ body {
   }
    
   .sidebar a.active {
-    background-color: #04AA6D;
+    background: linear-gradient(to top right, #33ccff 0%, #0000ff 100%);
     color: white;
   }
   
   .sidebar a:hover:not(.active) {
-    background-color: #555;
+    background-color: skyblue;
     color: white;
   }
   
@@ -52,9 +49,4 @@ body {
     }
   }
  
-  #result  {
-    display:none;
-  }
-  #candidates  {
-    display:none;
-  }
+  
