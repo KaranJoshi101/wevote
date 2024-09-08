@@ -1,3 +1,4 @@
+
 .event-box {
     background-color: burlywood;
     height: 400px;
@@ -10,4 +11,16 @@
 }
  .grid-item {
     order: 1;
+ }
+
+ #organize{
+    justify-content: center; 
+    border: 0.5px solid rgb(187, 182, 182);
+    padding: 20px 20px 20px 20px; 
+    border-radius: 1%;
+    display: none;
+ }
+
+ #allevents{
+    display:none;
  }

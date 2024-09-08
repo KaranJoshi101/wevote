@@ -1,39 +1,39 @@
-about = document.querySelector("#about")
-console.dir(about)
-aboutbtn=document.querySelector("#aboutbtn")
-console.dir(aboutbtn)
+const myevents = document.querySelector("#myevents");
+const organize=document.querySelector("#organize");
+const allevents=document.querySelector("#allevents");
+const myeventsbtn=document.querySelector("#myeventsbtn");
+const alleventsbtn=document.querySelector("#alleventsbtn");
+const organizebtn=document.querySelector("#organizebtn");
 const cl=["active","disabled"]
-aboutbtn.addEventListener("click",()=>{
-    candidates.style.display="none";
-    about.style.display="inline";
-    result.style.display="none";
-    candidatesbtn.classList.remove(...cl);
-    aboutbtn.classList.add(...cl);
-    resultbtn.classList.remove(...cl);
+myeventsbtn.addEventListener("click",()=>{
+    allevents.style.display="none";
+    myevents.style.display="";
+    organize.style.display="none";
+    alleventsbtn.classList.remove(...cl);
+    myeventsbtn.classList.add(...cl);
+    organizebtn.classList.remove(...cl);
 })
-candidates=document.querySelector("#candidates")
-console.dir(candidates)
-candidatesbtn=document.querySelector("#candidatesbtn")
-console.dir(candidatesbtn)
-candidatesbtn.addEventListener("click",()=>{
-    candidates.style.display="inline";
-    about.style.display="none";
-    result.style.display="none";
-    candidatesbtn.classList.add(...cl);
-    aboutbtn.classList.remove(...cl);
-    resultbtn.classList.remove(...cl);
+
+
+alleventsbtn.addEventListener("click",()=>{
+    allevents.style.display="block";
+    myevents.style.display="none";
+    organize.style.display="none";
+    alleventsbtn.classList.add(...cl);
+    myeventsbtn.classList.remove(...cl);
+    organizebtn.classList.remove(...cl);
 
     
 })
-result=document.querySelector("#result")
-console.dir(result)
-resultbtn=document.querySelector("#resultbtn")
-console.dir(resultbtn)
-resultbtn.addEventListener("click",()=>{
-    candidates.style.display="none";
-    about.style.display="none";
-    result.style.display="inline";
-    candidatesbtn.classList.remove(...cl);
-    aboutbtn.classList.remove(...cl);
-    resultbtn.classList.add(...cl);
+
+
+
+
+organizebtn.addEventListener("click",()=>{
+    allevents.style.display="none";
+    myevents.style.display="none";
+    organize.style.display="flex";
+    alleventsbtn.classList.remove(...cl);
+    myeventsbtn.classList.remove(...cl);
+    organizebtn.classList.add(...cl);
 })
