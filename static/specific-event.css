@@ -57,7 +57,7 @@ body{
  
   #organize{
      justify-content: center; 
-     border: 5px solid rgb(187, 182, 182);
+     border: 1.5px solid rgb(187, 182, 182);
      padding: 20px 20px 20px 20px; 
      border-radius: 1%;
      display: none;
