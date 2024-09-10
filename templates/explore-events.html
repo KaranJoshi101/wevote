@@ -21,7 +21,7 @@
         <h2 class="display-5 fw-bold text-body-emphasis" style="line-height: 40px;">{{event.title}}</h2>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-start btn-group" role="group">
-        {%if event.organizerId==user.id%}
+        {%if event.organizerId==user.id and event.startTime>event.startTime.now()%}
         <a type="button" class="btn btn-warning btn-sm btn-lg me-md">Update</a>
         <a type="button" class="btn btn-danger btn-sm btn-lg me-md" href="/{{user.id}}/{{event.id}}/delete">Delete</a>
         {%endif%}
@@ -102,11 +102,11 @@
 
 
 
-
+    {%if (event.startTime<event.startTime.now()) and (event.endTime>event.endTime.now())%}
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
       <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="Vote Button">Vote</button>
     </div>
-
+    {%endif%}
   </div>
 
 
