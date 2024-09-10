@@ -34,10 +34,19 @@
         <img src="/static/voteThumbnail.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="400" loading="lazy">
       </div>
       <div class="col-lg-8">
-          <small style=" color: #0a694b; font-weight: 700;font-size: xx-large;" id="timer"></small>
-          <p class="fw-bold text-body-emphasis" style="font-size:large;" id="datetime">Date : {{event.startTime}} <br> Time : 12:22 AM <br> Duration : {%if event.durHour%}{{event.durHour}} hours {%else%}{{event.durMin}} minutes {%endif%} </p>
-          <p id="dur" style="display:none;">{%if event.durHour%}{{event.durHour}} hours{%else%}{{event.durMin}} minutes{%endif%}</p>
-          <p class="lead">{{event.desc}}</p>
+        {%if event.startTime>event.startTime.now()%}
+        <small style="margin-left: 10px; color: #0a694b; font-weight: 700;" id="timer">Starts in </small>
+        <p id="startTimer" style="display: none;">{{event.startTime}}w{{event.endTime}}</p>
+        
+
+        {%elif event.endTime>event.endTime.now()%}
+        <small style="margin-left: 10px; color: red; font-weight: 700;" id="timer">Ends in </small>
+        <p style="display: none;" id="startTimer">{{event.endTime}}</p>
+        {%else%}
+        <small style="margin-left: 10px; color: #0a694b; font-weight: 700;">Event Successfully Completed</small>
+        {%endif%}
+          <p id="startDate" style="font-size:large;">Start Date : {{event.startTime}}<br>Duration : {%if event.durHour%}{{event.durHour}} hours{%else%}{{event.durMin}} minutes{%endif%}</p>
+          <p id="lead">{{event.desc}}</p>
       </div>
     </div>
     {%for v in vote%}
