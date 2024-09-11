@@ -14,9 +14,11 @@ class Timer{
 
 }
 //Implementing a visually acceptable starting Date and duration
-
-        let ddate=new Date(startDate.innerText.slice(13,33));
+        if(startDate){
+            let ddate=new Date(startDate.innerText.slice(13,33));
         startDate.innerHTML="<p class='startDate'>Date: "+ddate.toDateString()+"<br>Time: "+ddate.toLocaleTimeString()+"<br>"+startDate.innerText.slice(33,)+"</p>";
+        }
+        
     
 //initiating cols
 var duration="";
