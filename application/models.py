@@ -26,6 +26,7 @@ class Vote(db.Model):
     branch=db.Column(db.String())
     gender=db.Column(db.String())
     vote=db.Column(db.Boolean,default=False)
+    candidateProfile=db.Column(db.String(120),nullable=True)
 
 
 class Event(db.Model):

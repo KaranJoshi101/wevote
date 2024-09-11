@@ -30,7 +30,10 @@ def deleteEvent(event_id):
 
 #methods imported from flask module
 from flask import Flask,render_template, redirect, request,url_for
+from werkzeug.utils import secure_filename
 from flask import current_app as app
+import uuid as uuid
+import os
 
 #models content imported in this file
 from .models import *
@@ -281,15 +284,36 @@ def exploreEvent(userId,eventId):
 @app.route('/<userId>/<eventId>/register',methods=['GET','POST'])
 def registerCandidate(userId,eventId):
     if request.method=='POST':
-        motive=request.form.get("motive")
-        branch=request.form.get("branch")
-        gender=request.form.get("gender")
         v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
-        v.branch=branch
-        v.motive=motive
-        v.gender=gender
+        v.motive=request.form.get("motive")
+        v.branch=request.form.get("branch")
+        v.gender=request.form.get("gender")
+        
+        v.candidateProfile=request.files["candidateProfile"]
+        
+        dp=secure_filename(v.candidateProfile.filename)
+        candidateProfile=str(uuid.uuid1())+"_"+dp
+        v.candidateProfile.save(os.path.join(app.config['UPLOAD_FOLDER'],candidateProfile))
+        v.candidateProfile=candidateProfile
         v.candidature=0
+        
         db.session.commit()
         return redirect(f'/{userId}/{eventId}/explore')
     u=User.query.get(userId)
     return render_template('register-candidate.html',user=u)
+
+@app.route('/<userId>/<eventId>/vote',methods=['GET','POST'])
+def vote(userId,eventId):
+    if request.method=='POST':
+        return
+    v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
+    e=Event.query.get(eventId)
+    registeredCandidates=[]
+    for i in Vote.query.filter_by(eventId=eventId).all():
+        if(i.role=='candidate' and i.candidature>=0):
+            registeredCandidates+=[User.query.get(i.userId)]
+      
+
+    if(v.vote):
+        return 'Already voted'
+    return render_template('vote-now.html',event=e,registeredCandidates=registeredCandidates)
