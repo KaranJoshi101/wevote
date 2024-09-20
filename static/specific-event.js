@@ -32,7 +32,7 @@ alleventsbtn.addEventListener("click",()=>{
 organizebtn.addEventListener("click",()=>{
     allevents.style.display="none";
     myevents.style.display="none";
-    organize.style.display="flex";
+    organize.style.display="block";
     alleventsbtn.classList.remove(...cl);
     myeventsbtn.classList.remove(...cl);
     organizebtn.classList.add(...cl);
@@ -42,7 +42,7 @@ if(createOne){
     createOne.addEventListener("click",()=>{
         allevents.style.display="none";
         myevents.style.display="none";
-        organize.style.display="flex";
+        organize.style.display="block";
         alleventsbtn.classList.remove(...cl);
         myeventsbtn.classList.remove(...cl);
         organizebtn.classList.add(...cl);
