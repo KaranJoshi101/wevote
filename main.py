@@ -8,6 +8,8 @@ def create_app():
     app.debug=True
     
     app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///wvote.sqlite3'
+    UPLOAD_FOLDER='C:\Documents\program_project\wevote\static\images'
+    app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
     db.init_app(app)
  
     app.app_context().push() #not very clear about this as of now but it kind of tells the 
