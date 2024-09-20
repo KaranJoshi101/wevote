@@ -1,5 +1,5 @@
 let timer=document.querySelector("#timer");
-
+let vote=document.querySelector("#vote");
 let startTimer=document.querySelector("#startTimer");
 let startDate=document.querySelector("#startDate");
 class Timer{
@@ -54,7 +54,8 @@ var duration="";
         let interval=setInterval(function(){
             if(cols.days==0 && cols.hours==0 && cols.min==0 && cols.sec==0){
                 timer.style.color="red";
-
+                if(vote)
+                    vote.style.display="";
                 if(cols.coeff=="Ends in "){
                     cols.ended=1;
                     timer.style.color="green";

@@ -1,6 +1,7 @@
 let timer=document.querySelectorAll(".timer");
 let startTimer=document.querySelectorAll(".startTimer");
 let startDates=document.querySelectorAll(".startDate");
+
 let cols=[];
 class Timer{
     constructor(d,h,m,s){

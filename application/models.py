@@ -13,6 +13,7 @@ class User(db.Model):
     school=db.Column(db.String(),default='x')
     batch=db.Column(db.String(),default='x')
     branch=db.Column(db.String(),default='x')
+    candidateProfile=db.Column(db.String(120),nullable=True)
     events=db.relationship('Event',backref='user')
     votes=db.relationship('Vote',backref='user')    
 
@@ -25,8 +26,9 @@ class Vote(db.Model):
     motive=db.Column(db.String())
     branch=db.Column(db.String())
     gender=db.Column(db.String())
+    vCount=db.Column(db.Integer,default=0)
     vote=db.Column(db.Boolean,default=False)
-    candidateProfile=db.Column(db.String(120),nullable=True)
+    
 
 
 class Event(db.Model):
@@ -41,5 +43,6 @@ class Event(db.Model):
     voterCount=db.Column(db.Integer())
     durHour=db.Column(db.Integer())
     durMin=db.Column(db.Integer())
+    numWinners=db.Column(db.Integer(),default=1)
     votes=db.relationship('Vote',backref='event')
 

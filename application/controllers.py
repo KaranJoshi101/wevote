@@ -29,7 +29,7 @@ def deleteEvent(event_id):
 
 
 #methods imported from flask module
-from flask import Flask,render_template, redirect, request,url_for
+from flask import Flask,render_template, redirect, request,url_for, flash
 from werkzeug.utils import secure_filename
 from flask import current_app as app
 import uuid as uuid
@@ -65,7 +65,7 @@ def login():
             if rec.pwd==p:
                 return redirect(f'/{rec.id}/home') 
             else:
-                return render_template('login-wrong-pass.html')
+                flash("Wrong Password")
         else:
             return 'email does not exist register->'
 
@@ -198,6 +198,11 @@ def userDashboard(userId):
         t=request.form.get('title')
         d=request.form.get('desc')
         ti=request.form.get('stime')
+        checkNumWinners=request.form.get('checkNumWinners')
+        if(checkNumWinners):
+            numWinners=int(request.form.get('numWinners'))
+        else:
+            numWinners=1
         stime=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
         rec=User.query.get(userId)
         durh=request.form.get('flexRadioDefault')
@@ -209,9 +214,9 @@ def userDashboard(userId):
             durMin=int(request.form.get("extendminute"))
             durHour=0
             etime=stime+datetime.timedelta(minutes=durMin)
-        print(durHour,durMin)
+        
         voters=request.form.get('voters').split(',')
-        e=Event(organizerId=userId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin)
+        e=Event(organizerId=userId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),voterCount=len(voters),durHour=durHour,durMin=durMin,numWinners=numWinners)
         db.session.add(e)
         db.session.commit()
 
@@ -285,16 +290,17 @@ def exploreEvent(userId,eventId):
 def registerCandidate(userId,eventId):
     if request.method=='POST':
         v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
+        u=User.query.get(userId)
         v.motive=request.form.get("motive")
         v.branch=request.form.get("branch")
         v.gender=request.form.get("gender")
         
-        v.candidateProfile=request.files["candidateProfile"]
+        u.candidateProfile=request.files["candidateProfile"]
         
-        dp=secure_filename(v.candidateProfile.filename)
+        dp=secure_filename(u.candidateProfile.filename)
         candidateProfile=str(uuid.uuid1())+"_"+dp
-        v.candidateProfile.save(os.path.join(app.config['UPLOAD_FOLDER'],candidateProfile))
-        v.candidateProfile=candidateProfile
+        u.candidateProfile.save(os.path.join(app.config['UPLOAD_FOLDER'],candidateProfile))
+        u.candidateProfile=candidateProfile
         v.candidature=0
         
         db.session.commit()
@@ -305,6 +311,7 @@ def registerCandidate(userId,eventId):
 @app.route('/<userId>/<eventId>/vote',methods=['GET','POST'])
 def vote(userId,eventId):
     if request.method=='POST':
+        
         return
     v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
     e=Event.query.get(eventId)
@@ -312,6 +319,7 @@ def vote(userId,eventId):
     for i in Vote.query.filter_by(eventId=eventId).all():
         if(i.role=='candidate' and i.candidature>=0):
             registeredCandidates+=[User.query.get(i.userId)]
+
       
 
     if(v.vote):

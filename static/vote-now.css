@@ -1,0 +1,14 @@
+.select{
+    background: linear-gradient(to bottom, #00ffcc 0%, #ff99ff 100%);
+    color: white;
+    font-family: sans-serif;
+}
+#number{
+    display:none;
+}
+#msg{
+    display: none;
+}
+#evote{
+    display: none;
+}
