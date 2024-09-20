@@ -325,3 +325,7 @@ def vote(userId,eventId):
     if(v.vote):
         return 'Already voted'
     return render_template('vote-now.html',event=e,registeredCandidates=registeredCandidates)
+
+@app.route('/public')
+def public():
+    return render_template('public-events.html')
