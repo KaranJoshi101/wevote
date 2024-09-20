@@ -11,7 +11,7 @@
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
             <div class="container-fluid">
-              <a class="navbar-brand" href="index.html">Home</a>
+              <a class="navbar-brand" href="/">Home</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -38,7 +38,7 @@
                 <div class="active pt-5" id="myevents">
                     <h1 class="pt-1">Public Events</h1>
                     {% if events|length == 0 %}
-                      <p>No Events For You. Don't Worry! <a id="createOne" href="#organize">Let's Create One</a></p>
+                      <p>No Events For You. Don't Worry! <a id="createOne" href="/login">Let's Create One</a></p>
                     {%else%}
                     <div class="container pt-5">
                       <div class="album py-5 bg-body">
