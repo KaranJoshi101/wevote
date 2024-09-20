@@ -11,6 +11,7 @@
 <body>
     <nav class="navbar fixed-top bg-body-secondary">
         <div class="container-fluid d-flex justify-content-between align-items-center">
+
             <h2 class="text-center display-4 fw-bold text-body-emphasis  mb-0">{{event.title}}</h2>
             <div class="d-flex flex-column justify-content-end">
                 <p class="text-center h5" id="timer" style="color:red">Ends in </p>
@@ -28,16 +29,21 @@
         <div class="container mt-5">
             <h3 id="msg">Maximum No. of Candidates Selected</h3>
            {%if registeredCandidates%}
+           
+
+
             <div class="row flex-lg-row align-items-center py-3 border rounded shadow-sm">
                 <div class="col-auto col-sm-auto col-lg-auto">
                   <img src=/static/images/{{registeredCandidates[0].candidateProfile}} class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="160" height="190">
                 </div>
+
             
                 <div class="col-lg-10">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1 class="display-6 fw-bold text-body-emphasis lh-1 mb-3">{{registeredCandidates[0].name}}</h1>
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{registeredCandidates[0].email}}</strong>
+
                     </div>
                     <button type="button" class="btn select">Select</button>
                   </div>
@@ -53,10 +59,12 @@
             {%for candidate in registeredCandidates[1:]%}
             <div class="row flex-lg-row align-items-center py-3 border rounded shadow-sm">
                 
+
                 <div class="col-auto col-sm-auto col-lg-auto">
                   <img src=/static/images/{{candidate.candidateProfile}} class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="160" height="190" loading="lazy">
                 </div>
                 <div class="col-lg-10">
+
                     
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
@@ -72,9 +80,11 @@
            
             {%endfor%}
             
+
         </div>
 
     </main>
+
 
 
 
@@ -87,12 +97,18 @@
     <footer class="footer fixed-bottom">
         <div class="container text-center">
             <span class="text-white">
+
                 <button type="button" class="btn btn-success px-5" id="vbutton">Vote Now</button>
+
+
+
             </span>
         </div>
     </footer>
+
 
     <script src="/static/vote-now.js"></script>
     <script src="/static/explore-events.js"></script>
 </body>
 </html>
+
