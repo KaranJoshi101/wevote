@@ -105,20 +105,19 @@ def verifyEmail(email):
     #otp sender
     from email.message import EmailMessage
     import ssl,smtplib
-    sender='www.joshikaran3424@gmail.com'
-    pwd='fmoevzvxexghzjli'
+    sender='wevoteteam@gmail.com'
+    pwd='bdsdenzmphtgrymb'
     rec=email
     sub='OTP for WeVote Application'
     body="""
     Dear """+Username(email)+""",
+
     Please use the OTP below to sign into the WeVote application.
-
-
+    
     OTP: """+str(o)+"""
-
-
+    Do not share the OTP with anyone.
+    
     Kind regards,
-
     WeVote Team
     """
     em=EmailMessage()

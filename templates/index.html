@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome To WeVote</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="#"><b>Home</b></a>
@@ -18,9 +19,6 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/public">Public Events</a>
               </li>
-              
-             
-              
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -30,6 +28,7 @@
           </div>
         </div>
       </nav>
+
       <main>
         <div class="container pt-4">
           <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
@@ -47,13 +46,61 @@
           </div>
         </div>
 
+
+        <!-- cards -->
+         <div class="container">
+          <div class="container px-4 py-5" id="custom-cards">
+            <h2 class="pb-2 border-bottom">Our Top Features</h2>
+        
+            <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-3">
+              <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('/static/privacy-pic.png');background-size: cover;">
+                  <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                    <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Your Privacy Matters</h3>
+                    <ul class="d-flex list-unstyled mt-auto">
+                      <li class="me-auto">
+                        <img src="" alt="WeVote" width="32" height="32" class="rounded-circle border border-white">
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('/static/confidential.jpg');background-size: cover;">
+                  <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                    <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Confidential Voting, Seamless Events</h3>
+                    <ul class="d-flex list-unstyled mt-auto">
+                      <li class="me-auto">
+                        <img src="" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('fast-result.jpg');background-size: cover;">
+                  <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                    <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Detailed and Fast Result</h3>
+                    <ul class="d-flex list-unstyled mt-auto">
+                      <li class="me-auto">
+                        <img src="" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         </div>
        
   
       </main>
 
       <div class="container">
-        <footer class="py-3 my-4">
-          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <footer class="pt-3 mt-4">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-2">
             <li class="nav-item"><a href="/" class="nav-link px-2 text-body-secondary">Home</a></li>
             <li class="nav-item"><a href="/public" class="nav-link px-2 text-body-secondary">Public Events</a></li>
             <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Contact Us</a></li>
