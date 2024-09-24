@@ -1,4 +1,4 @@
-let select=document.querySelectorAll('.select');
+let select=document.querySelectorAll('.personselect');
 let number=document.querySelector('#number');
 let msg=document.querySelector('#msg');
 let click=[];
