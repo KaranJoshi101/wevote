@@ -10,6 +10,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///wvote.sqlite3'
     UPLOAD_FOLDER='C:\Documents\program_project\wevote\static\images'
     app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
+    app.config['SECRET_KEY']="this is my secret key"
     db.init_app(app)
  
     app.app_context().push() #not very clear about this as of now but it kind of tells the 

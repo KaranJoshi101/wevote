@@ -14,19 +14,32 @@
     <form action="\login" method="POST">
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+          <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
           <small id="emailHelp" class="form-text text-muted">Enter your official College Email-ID</small>
         </div>
         <div class="form-group" style="margin-top: 10px;">
           <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" name="pass" placeholder="Password">
+          <input type="password" class="form-control" id="exampleInputPassword1" name="pass" placeholder="Password" required>
         </div>
-        {%for message in get_flashed_messages()%}
-          {{message}}
-        {%endfor%}
+        
+        <div style="display: flex; justify-content: space-between;">
         <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Submit</button>
+        <p style="color: rgb(214, 4, 4); font-size: small; margin-top: 2px;">
+          {%for message in get_flashed_messages()%}
+          
+          {{message}}
+       
+          {%endfor%}
+        </p>
+      </div>
+      <a href="/forgot" style="font-size: small; text-decoration: none;" >Forgot Password?</a>
       </form>
-      <p style="line-height: 5rem;">New User? <a href="/register">Register</a></p>
+      
+        
+      <div style="line-height: 5rem;">
+    
+      New User? <a href="/register">Register</a>
+    </div>
     </div>    
 </body>
 </html>

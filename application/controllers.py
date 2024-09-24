@@ -50,7 +50,15 @@ def homePage():
     return render_template('index.html')
 
 
+#about us
+@app.route('/about')
+def aboutUs():
+    return render_template('about-us.html')
 
+#contributors page
+@app.route('/contributor')
+def countributorsPage():
+    return render_template('contributor.html')
 #url for login page
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -65,9 +73,9 @@ def login():
             if rec.pwd==p:
                 return redirect(f'/{rec.id}/home') 
             else:
-                flash("Wrong Password")
+                flash("incorrect password")
         else:
-            return 'email does not exist register->'
+            flash('invalid email. Register Now')
 
            #takes to '/user' page
     
@@ -148,6 +156,10 @@ def setPassword(email):
         return redirect(f'/{rec.id}/home')
 
     return render_template('register3.html',email=email)
+
+#forgot password
+# @app.route('/forgot')
+# def forgot()
 
 #url for admin dashboard
 @app.route('/admin')
