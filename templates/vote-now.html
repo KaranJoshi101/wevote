@@ -30,58 +30,61 @@
             <h3 id="msg">Maximum No. of Candidates Selected</h3>
            {%if registeredCandidates%}
            
-
-
             <div class="row flex-lg-row align-items-center py-3 border rounded shadow-sm">
                 <div class="col-auto col-sm-auto col-lg-auto">
                   <img src=/static/images/{{registeredCandidates[0].candidateProfile}} class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="160" height="190">
                 </div>
 
-            
                 <div class="col-lg-10">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        
-                        <h1 class="display-6 fw-bold text-body-emphasis lh-1 mb-3">{{registeredCandidates[0].name}}</h1>
-                        <strong class="d-inline-block mb-2 text-primary-emphasis">{{registeredCandidates[0].email}}</strong>
 
+                        <h6 class="fw-bold">Ballot No. - 1</h6>
+                        <p class="fs-3 fw-bold text-body-emphasis lh-1 mb-2">{{registeredCandidates[0].name}}</p>
+
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">{{registeredCandidates[0].email}}</strong>
                     </div>
-                    <button type="button" class="btn select">Select</button>
+                    <div class="personselect">
+                        <div style="display:none"><h3>1</h3><h4>{{registeredCandidates[0].name}}</h4><h5>{{registeredCandidates[0].email}}</h5></div>
+                        <button type="button" class="btn">Select</button>
+                    </div>
+                    
                   </div>
                 </div>
+
             </div>
+
+        </div>
             {%endif%}
             
         
         <!-- end of loop -->
        
         
-         <div class="container mt-3">
+        <div class="container mt-3">
             {%for candidate in registeredCandidates[1:]%}
             <div class="row flex-lg-row align-items-center py-3 border rounded shadow-sm">
                 
-
                 <div class="col-auto col-sm-auto col-lg-auto">
                   <img src=/static/images/{{candidate.candidateProfile}} class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="160" height="190" loading="lazy">
                 </div>
-                <div class="col-lg-10">
-
-                    
+                <div class="col-lg-10"> 
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="display-6 fw-bold text-body-emphasis lh-1 mb-3">{{candidate.name}}</h1>
+                        <h6 class="fw-bold">Ballot No. - {{loop.index+1}}</h6>
+                        <p class="fs-3 fw-bold text-body-emphasis lh-1 mb-2">{{candidate.name}}<p>
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{candidate.email}}</strong>
                     </div>
-                    <button type="button" class="btn select">Select</button>
-                  </div>
-                  
+                    <div class="personselect">
+                        <div style="display:none"><h3>{{loop.index+1}}</h3><h4>{{candidate.name}}</h4><h5>{{candidate.email}}</h5></div>
+                        <button type="button" class="btn">Select</button>
+                    </div>
+                  </div> 
                 </div>
                
             </div>
            
-            {%endfor%}
-            
-
+            {%endfor%}  
         </div>
 
     </main>
@@ -94,15 +97,30 @@
 <br>
 
 
-`   <p id="hide" name="evote"></p>
-    <footer class="footer fixed-bottom">
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered  modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title fw-bold" id="staticBackdropLabel">Confirm Your Vote</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="mbody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form>
+            <p name="voted" style="display:none" id="voted"></p>
+            <button type="submit" class="btn btn-success">Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <footer class="footer fixed-bottom pb-3">
         <div class="container text-center">
             <span class="text-white">
-
-                <button type="button" class="btn btn-success px-5" id="vbutton">Vote Now</button>
-
-
-
+                <button type="button" class="btn btn-dark px-5" id="vbutton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Vote Now</button>
             </span>
         </div>
     </footer>
