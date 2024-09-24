@@ -50,7 +50,15 @@ def homePage():
     return render_template('index.html')
 
 
+#about us
+@app.route('/about')
+def aboutUs():
+    return render_template('about-us.html')
 
+#contributors page
+@app.route('/contributor')
+def countributorsPage():
+    return render_template('contributor.html')
 #url for login page
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -65,9 +73,9 @@ def login():
             if rec.pwd==p:
                 return redirect(f'/{rec.id}/home') 
             else:
-                flash("Wrong Password")
+                flash("incorrect password")
         else:
-            return 'email does not exist register->'
+            flash('invalid email. Register Now')
 
            #takes to '/user' page
     
@@ -105,20 +113,19 @@ def verifyEmail(email):
     #otp sender
     from email.message import EmailMessage
     import ssl,smtplib
-    sender='www.joshikaran3424@gmail.com'
-    pwd='fmoevzvxexghzjli'
+    sender='wevoteteam@gmail.com'
+    pwd='bdsdenzmphtgrymb'
     rec=email
     sub='OTP for WeVote Application'
     body="""
     Dear """+Username(email)+""",
+
     Please use the OTP below to sign into the WeVote application.
-
-
+    
     OTP: """+str(o)+"""
-
-
+    Do not share the OTP with anyone.
+    
     Kind regards,
-
     WeVote Team
     """
     em=EmailMessage()
@@ -149,6 +156,10 @@ def setPassword(email):
         return redirect(f'/{rec.id}/home')
 
     return render_template('register3.html',email=email)
+
+#forgot password
+# @app.route('/forgot')
+# def forgot()
 
 #url for admin dashboard
 @app.route('/admin')
