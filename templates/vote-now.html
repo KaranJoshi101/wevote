@@ -38,11 +38,17 @@
                 <div class="col-lg-10">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
+
                         <h6 class="fw-bold">Ballot No. - 1</h6>
                         <p class="fs-3 fw-bold text-body-emphasis lh-1 mb-2">{{registeredCandidates[0].name}}</p>
+
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{registeredCandidates[0].email}}</strong>
                     </div>
-                    <button type="button" class="btn personselect">Select</button>
+                    <div class="personselect">
+                        <div style="display:none"><h3>1</h3><h4>{{registeredCandidates[0].name}}</h4><h5>{{registeredCandidates[0].email}}</h5></div>
+                        <button type="button" class="btn">Select</button>
+                    </div>
+                    
                   </div>
                 </div>
 
@@ -65,11 +71,14 @@
                 <div class="col-lg-10"> 
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="fw-bold">Ballot No. - 2</h6>
+                        <h6 class="fw-bold">Ballot No. - {{loop.index+1}}</h6>
                         <p class="fs-3 fw-bold text-body-emphasis lh-1 mb-2">{{candidate.name}}<p>
                         <strong class="d-inline-block mb-2 text-primary-emphasis">{{candidate.email}}</strong>
                     </div>
-                    <button type="button" class="btn personselect">Select</button>
+                    <div class="personselect">
+                        <div style="display:none"><h3>{{loop.index+1}}</h3><h4>{{candidate.name}}</h4><h5>{{candidate.email}}</h5></div>
+                        <button type="button" class="btn">Select</button>
+                    </div>
                   </div> 
                 </div>
                
@@ -95,28 +104,12 @@
           <h4 class="modal-title fw-bold" id="staticBackdropLabel">Confirm Your Vote</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-
-          <!-- modal start -->
-            <div>
-                <div class="row flex-lg-row align-items-center py-2 border rounded"> 
-                    <div class="col-lg-10"> 
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-bold">Ballot No. - 2</h6>
-                            <p class="fs-5 fw-bold text-body-emphasis lh-1">{{candidate.name}}<p>
-                        </div>
-                      </div> 
-                    </div>
-                </div>
-            </div>
-            <!-- modal end -->
-
+        <div class="modal-body" id="mbody">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <form>
-            <p name="voted" style="display:none"></p>
+            <p name="voted" style="display:none" id="voted"></p>
             <button type="submit" class="btn btn-success">Confirm</button>
           </form>
         </div>
@@ -124,9 +117,6 @@
     </div>
   </div>
   
-
-
-    <p id="hide" name="evote"></p>
     <footer class="footer fixed-bottom pb-3">
         <div class="container text-center">
             <span class="text-white">

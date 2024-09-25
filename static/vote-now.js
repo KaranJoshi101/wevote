@@ -1,40 +1,48 @@
 let select=document.querySelectorAll('.personselect');
 let number=document.querySelector('#number');
 let msg=document.querySelector('#msg');
+let vbutton=document.querySelector('#vbutton');
+let mbody=document.querySelector('#mbody');
 let click=[];
 class clicked{
-    constructor(s,c){
-        this.s=s;
+    constructor(l,c,f){
+        this.f=f;
         this.c=c;
+        this.l=l;
     }
 }
 let i=0;
 for(s of select){
-    click[i]=new clicked(s,0);
+    click[i]=new clicked(s.lastElementChild,0,s.firstElementChild);
     i++;
 }
 var count=0;
+var sCand=[]
 let disabled=0;
 for(let c of click){
-    c.s.addEventListener('click',()=>{
-        if(count==Number(number.innerText)){
+    c.l.addEventListener('click',()=>{
+        if(c.l.innerText=='Select' && count==Number(number.innerText)){
             msg.style.display='block';
             disabled=1;
         }
         if(!c.c){
             if(!disabled){
-                c.s.style.background='linear-gradient(to bottom, #003399 0%, #cc33ff 100%)';
+                c.l.style.background='linear-gradient(to bottom, #003399 0%, #cc33ff 100%)';
             
-            c.s.innerText='Selected';
+            c.l.innerText='Selected';
             c.c=1;
+            
+            sCand.push(c.f);
             count++;
             }
             
         }
         else{
-            c.s.style.background='linear-gradient(to bottom, #00ffcc 0%, #ff99ff 100%)';
-            c.s.innerText='Select';
+            c.l.style.background='linear-gradient(to bottom, #00ffcc 0%, #ff99ff 100%)';
+            c.l.innerText='Select';
             c.c=0;
+            sCand=sCand.toSpliced(sCand.indexOf(c.f),1);
+            console.log(sCand);
             count--;
             disabled=0;
             msg.style.display='none';
@@ -42,3 +50,14 @@ for(let c of click){
             
     })
 }
+vbutton.addEventListener("click",()=>{
+    mbody.innerHTML='';
+    voted.innerText='';
+    for(let i =0;i<sCand.length;i++){
+        let b=sCand[i].childNodes[0];
+        let name=sCand[i].childNodes[1];
+        let email=sCand[i].childNodes[2];
+        mbody.innerHTML+='<div><div class="row flex-lg-row align-items-center py-2 border rounded"> <div class="col-lg-10"><div class="d-flex justify-content-between align-items-center"><div><h6 class="fw-bold">Ballot No. - '+b.innerText+'</h6><p class="fs-5 fw-bold text-body-emphasis lh-1">'+name.innerText+'<p></div></div></div></div></div>';
+        voted.innerText+=email;
+        }
+})
