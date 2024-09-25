@@ -2,6 +2,7 @@ let timer=document.querySelector("#timer");
 let vote=document.querySelector("#vote");
 let startTimer=document.querySelector("#startTimer");
 let startDate=document.querySelector("#startDate");
+let vbutton=document.querySelector('#vbutton')
 class Timer{
     constructor(d,h,m,s){
         this.days=d;
@@ -55,11 +56,14 @@ var duration="";
             if(cols.days==0 && cols.hours==0 && cols.min==0 && cols.sec==0){
                 timer.style.color="red";
                 if(vote)
-                    vote.style.display="";
+                vote.style.display="block";
                 if(cols.coeff=="Ends in "){
                     cols.ended=1;
                     timer.style.color="green";
                     timer.innerText="Event Successfully Completed";
+                    if(vote)
+                    vote.style.display="None";
+                    vbutton.classList.add('disabled');
                     clearInterval(interval);
                 }
                 
