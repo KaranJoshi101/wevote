@@ -258,8 +258,9 @@ def userDashboard(userId):
                     db.session.add(newregistration)
                     db.session.commit()
                 check=User.query.filter_by(email=i).first()
-                r=Vote(eventId=e.id,userId=check.id,role='voter')
-                db.session.add(r)
+                if(not Vote.query.filter_by(userId=check.id,eventId=e.id).first()):
+                    r=Vote(eventId=e.id,userId=check.id,role='voter')
+                    db.session.add(r)
                 db.session.commit()
         else:
             
@@ -295,6 +296,7 @@ def exploreEvent(userId,eventId):
     for v in vote:
         if v.candidature==0:
             cand+=[User.query.get(v.userId)]
+    vuser=Vote.query.filter_by(userId=userId,eventId=eventId).first()
     return render_template('explore-events.html',event=event,user=user,vote=vote,cand=cand)
 
 @app.route('/<userId>/<eventId>/register',methods=['GET','POST'])
@@ -323,7 +325,21 @@ def registerCandidate(userId,eventId):
 def vote(userId,eventId):
     if request.method=='POST':
         
-        return
+        voted=request.form.get('voted')
+      
+        vList=(voted.lstrip(' ')).split(' ')
+        print(vList)
+        Vote.query.filter_by(userId=userId,eventId=eventId).first().vote=True
+        for i in vList:
+           
+            if i:
+                print(i)
+                c=User.query.filter_by(email=i).first()
+                print(c)
+                Vote.query.filter_by(userId=c.id,eventId=eventId).first().vCount+=1
+        db.session.commit()
+        
+        return redirect(f'/{userId}/{eventId}/explore')
     v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
     e=Event.query.get(eventId)
     registeredCandidates=[]
@@ -335,7 +351,7 @@ def vote(userId,eventId):
 
     if(v.vote):
         return 'Already voted'
-    return render_template('vote-now.html',event=e,registeredCandidates=registeredCandidates)
+    return render_template('vote-now.html',event=e,registeredCandidates=registeredCandidates,userId=userId)
 
 @app.route('/public')
 def public():

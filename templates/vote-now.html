@@ -108,10 +108,12 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <form>
-            <p name="voted" style="display:none" id="voted"></p>
-            <button type="submit" class="btn btn-success">Confirm</button>
-          </form>
+            <form action="" method="POST">
+                <input type="text" name="voted" style="display:none" id="voted"></input>
+            `   <button type="submit" class="btn btn-success">Confirm</button>
+            </form>
+            
+        
         </div>
       </div>
     </div>
@@ -120,7 +122,7 @@
     <footer class="footer fixed-bottom pb-3">
         <div class="container text-center">
             <span class="text-white">
-                <button type="button" class="btn btn-dark px-5" id="vbutton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Vote Now</button>
+                <button type="button" class="btn btn-dark px-5 disabled" id="vbutton" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Vote Now</button>
             </span>
         </div>
     </footer>

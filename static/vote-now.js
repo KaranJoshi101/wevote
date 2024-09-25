@@ -3,6 +3,7 @@ let number=document.querySelector('#number');
 let msg=document.querySelector('#msg');
 let vbutton=document.querySelector('#vbutton');
 let mbody=document.querySelector('#mbody');
+let voted=document.querySelector('#voted');
 let click=[];
 class clicked{
     constructor(l,c,f){
@@ -34,6 +35,7 @@ for(let c of click){
             
             sCand.push(c.f);
             count++;
+            vbutton.classList.remove('disabled');
             }
             
         }
@@ -46,18 +48,23 @@ for(let c of click){
             count--;
             disabled=0;
             msg.style.display='none';
+            if(count==0){
+                vbutton.classList.add('disabled');
+            }
         }
             
     })
 }
 vbutton.addEventListener("click",()=>{
-    mbody.innerHTML='';
-    voted.innerText='';
-    for(let i =0;i<sCand.length;i++){
-        let b=sCand[i].childNodes[0];
-        let name=sCand[i].childNodes[1];
-        let email=sCand[i].childNodes[2];
-        mbody.innerHTML+='<div><div class="row flex-lg-row align-items-center py-2 border rounded"> <div class="col-lg-10"><div class="d-flex justify-content-between align-items-center"><div><h6 class="fw-bold">Ballot No. - '+b.innerText+'</h6><p class="fs-5 fw-bold text-body-emphasis lh-1">'+name.innerText+'<p></div></div></div></div></div>';
-        voted.innerText+=email;
-        }
+    if(count<=Number(number.innerText)){
+        mbody.innerHTML='';
+        voted.value='';
+        for(let i =0;i<sCand.length;i++){
+            let b=sCand[i].childNodes[0];
+            let name=sCand[i].childNodes[1];
+            mbody.innerHTML+='<div><div class="row flex-lg-row align-items-center py-2 border rounded"> <div class="col-lg-10"><div class="d-flex justify-content-between align-items-center"><div><h6 class="fw-bold">Ballot No. - '+b.innerText+'</h6><p class="fs-5 fw-bold text-body-emphasis lh-1">'+name.innerText+'<p></div></div></div></div></div>';
+            voted.value+=' '+sCand[i].childNodes[2].innerText;
+            }
+    }
+        
 })
