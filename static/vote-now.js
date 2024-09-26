@@ -1,7 +1,7 @@
 let select=document.querySelectorAll('.personselect');
 let number=document.querySelector('#number');
 let msg=document.querySelector('#msg');
-let vbutton=document.querySelector('#vbutton');
+
 let mbody=document.querySelector('#mbody');
 let voted=document.querySelector('#voted');
 let click=[];
