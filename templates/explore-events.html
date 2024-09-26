@@ -76,7 +76,7 @@
                 {%if v.userId==c.id%}
                   <div class="col">
                     <div class="card shadow-sm">
-                      <img src=/static/images/{{c.candidateProfile}} alt="">
+                      <img src=/static/images/{{c.candidateProfile}} alt="candidate image" height="290px" width="100%" style="object-fit: cover;">
                       <div class="card-body">
                         <h5 style="font-weight: 700;">{{c.name}}</h5>
                         <button  class="btn btn-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#demo{{loop.index}}">Ambition</button>

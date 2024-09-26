@@ -65,7 +65,7 @@
                                   {%else%}
                                   <small style="margin-left: 10px; color: #0a694b; font-weight: 700;">Event Successfully Completed</small>
                                   {%endif%}
-                                  <img src="/static/voteThumbnail.jpg" alt="">
+                                  <img src="/static/voteThumbnail.jpg" alt="event thumbnail" height="250px" width="100%" style="object-fit: cover;">
                                   <div class="card-body">
                                     <p class="card-text">{{event.desc}}
                                     <p class="startDate">Start Date : {{event.startTime}} <br> Duration : {%if event.durHour%}{{event.durHour}} hours {%else%}{{event.durMin}} minutes {%endif%}</p>
