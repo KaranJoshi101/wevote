@@ -17,75 +17,26 @@
           <div class="container">
             <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-5">
               <!-- This is event box1 -->
+              {%for winner,voter in winners%}
                 <div class="container pt-5">
                     <div class="col">
                         <div class="card shadow-sm">
                           <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <h4 style="font-weight:550; margin-top: 10px; margin-left: 10px;">Niranjan Raj</h4>
+                            <h4 style="font-weight:550; margin-top: 10px; margin-left: 10px;">{{winner.name}}</h4>
                             <small class="bg-success fw-bold text-white px-2 rounded-start">Winner</small>
                           </div>
-                          <img src="/wevote/static/images/51316244-76b5-11ef-8199-a297e8b1e5b0_IMAGE_2024-06-20_145547.jpg" alt="" width="305px" height="300px">
+                          <img src="/static/images/{{winner.candidateProfile}}" alt="" width="305px" height="300px">
                           <div class="card-body">
-                            <p class="card-text text-center">niranjanrajsoni6793@gmail.com</p>
+                            <p class="card-text text-center">{{winner.email}}</p>
                             <div class="d-grid">
-                              <a type="button" class="btn btn-success" >Votes - 144</a>
+                              <a type="button" class="btn btn-success" >Votes - {{voter.vCount}}</a>
                             </div>
                           </div>
                         </div>
                     </div>
                 </div>
-                <div class="container pt-5">
-                  <div class="col">
-                      <div class="card shadow-sm">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                          <h4 style="font-weight:550; margin-top: 10px; margin-left: 10px;">Aditya Tiwari</h4>
-                          <small class="bg-success fw-bold text-white px-2 rounded-start">Winner</small>
-                        </div>
-                        <img src="/wevote/static/images/aditya.jpg" alt="" width="305px" height="300px">
-                        <div class="card-body">
-                          <p class="card-text text-center">adityatiwari@gmail.com</p>
-                          <div class="d-grid">
-                            <a type="button" class="btn btn-success" >Votes - 144</a>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="container pt-5">
-                <div class="col">
-                    <div class="card shadow-sm">
-                      <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <h4 style="font-weight:550; margin-top: 10px; margin-left: 10px;">Karan Joshi</h4>
-                        <small class="bg-success fw-bold text-white px-2 rounded-start">Winner</small>
-                      </div>
-                      <img src="/wevote/static/images/karan.jpg" alt="" width="305px" height="300px">
-                      <div class="card-body">
-                        <p class="card-text text-center">joshikaran@gmail.com</p>
-                        <div class="d-grid">
-                          <a type="button" class="btn btn-success" >Votes - 144</a>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container pt-5">
-              <div class="col">
-                  <div class="card shadow-sm">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                      <h4 style="font-weight:550; margin-top: 10px; margin-left: 10px;">Utsav Udit Mishra</h4>
-                      <small class="bg-success fw-bold text-white px-2 rounded-start">Winner</small>
-                    </div>
-                    <img src="/wevote/static/images/utsav.jpg" alt="" width="305px" height="300px">
-                    <div class="card-body">
-                      <p class="card-text text-center">utsavtheking@gmail.com</p>
-                      <div class="d-grid">
-                        <a type="button" class="btn btn-success" >Votes - 144</a>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-          </div>
-                <!-- end of a box -->
+              {%endfor%}
+           <!-- end of a box -->
           </div>
         </div>
       </div>
@@ -119,34 +70,24 @@
                 </tr>
               </thead>
               <tbody>
+                {%for winner,voter in winners%}
                 <tr class="table-success">
                   <th scope="row">1</th>
-                  <td>Niranjan Raj</td>
-                  <td>niranjanrajsoni6793@gmail.com</td>
-                  <td class="text-center">112</td>
-                  <td class="text-center">92%</td>
+                  <td>{{winner.name}}</td>
+                  <td>{{winner.email}}</td>
+                  <td class="text-center">{{voter.vCount}}</td>
+                  <td class="text-center">{{voter.vCount*100/voterCount}}%</td>
                 </tr>
+                {%endfor%}
+                {%for loser,voter in losers%}
                 <tr>
                   <th scope="row">2</th>
-                  <td>Niranjan Raj</td>
-                  <td>niranjanrajsoni6793@gmail.com</td>
-                  <td class="text-center">100</td>
-                  <td class="text-center">82%</td>
+                  <td>{{loser.name}}</td>
+                  <td>{{loser.email}}</td>
+                  <td class="text-center">{{voter.vCount}}</td>
+                  <td class="text-center">{{voter.vCount*100/voterCount}}%</td>
                 </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Niranjan Raj</td>
-                    <td>niranjanrajsoni6793@gmail.com</td>
-                    <td class="text-center">92</td>
-                    <td class="text-center">72%</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Niranjan Raj</td>
-                    <td>niranjanrajsoni6793@gmail.com</td>
-                    <td class="text-center">45</td>
-                    <td class="text-center">12%</td>
-                </tr>
+                {%endfor%}
               </tbody>
         </table>
       </div>
@@ -169,8 +110,8 @@
                     </thead>
                     <tbody class="table-group-divider">
                       <tr>
-                        <td class="text-center">240</td>
-                        <td class="text-center">214</td>
+                        <td class="text-center">{{voterCount}}</td>
+                        <td class="text-center">ye abhi update krna hai</td>
                       </tr>
                     </tbody>
                   </table>
@@ -180,7 +121,7 @@
 
             <!-- This is event box2 -->
           <div class="container">
-            <img src="/wevote/static/pie-chart.png" class="img-fluid" alt="...">
+            <img src="/static/pie-chart.png" class="img-fluid" alt="...">
           </div>
             <!-- end of a box2 -->
              

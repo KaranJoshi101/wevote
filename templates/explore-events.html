@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/explore-events.css">
 </head>
 <body>
-
+  <p id="exp" style="display:none">/{{user.id}}/home</p>
   <div class="container">
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-4 pb-3">
@@ -61,10 +61,11 @@
     </div>
     {%endif%}
     {%endfor%}
-
+    {%if cand|length>0%}
     <div>
       <h3 style="font-weight: 700;">Candidates Details</h3>
     </div>
+    {%endif%}
     <div class="album py-2 bg-body">
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
@@ -98,15 +99,27 @@
         </div>
       </div>  
     </div>
-
-
-    {%if (event.startTime<event.startTime.now()) and (event.endTime>event.endTime.now())%}
+    {% if (event.endTime>event.endTime.now()) %}
+    {%if not vuser.vote %}
+    {%if (event.startTime<event.startTime.now())%}
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
+        <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="Vote Button" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+      </div>
+      {%endif%}
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
+        <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="vote" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+      </div>
+    {%else%}
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
-      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="Vote Button" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+      <button type="button" class="btn btn-success btn-lg px-4 me-md-2" target="_blank">Successfully Voted</button>
     </div>
     {%endif%}
-    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5"></div>
-      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="vote" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+    {%else%}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
+      <a type="button" class="btn btn-lg px-4 me-md-2 fw-bold" style="background-color: #7b241c;color: white;" href="/{{event.id}}/result">View Result</a>
+    </div>
+    {%endif%}
+      
     </div>
   </div>
 

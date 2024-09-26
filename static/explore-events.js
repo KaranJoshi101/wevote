@@ -2,7 +2,7 @@ let timer=document.querySelector("#timer");
 let vote=document.querySelector("#vote");
 let startTimer=document.querySelector("#startTimer");
 let startDate=document.querySelector("#startDate");
-let vbutton=document.querySelector('#vbutton')
+let exp=document.querySelector('#exp');
 class Timer{
     constructor(d,h,m,s){
         this.days=d;
@@ -58,18 +58,13 @@ var duration="";
                 if(vote)
                 vote.style.display="block";
                 if(cols.coeff=="Ends in "){
-                    cols.ended=1;
-                    timer.style.color="green";
-                    timer.innerText="Event Successfully Completed";
-                    if(vote)
-                    vote.style.display="None";
-                    vbutton.classList.add('disabled');
-                    clearInterval(interval);
+                    
+                    window.location.replace(exp.innerText);
                 }
                 
                 cols.coeff="Ends in ";
                 flag=0;
-                console.log(startTimer.innerText)
+               
                 duration="";
                 for(char of startTimer.innerText){
                     if(char=='w'){
@@ -84,7 +79,7 @@ var duration="";
             cols.hours=Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
             cols.min=Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60))
             cols.sec=Math.floor((duration % (1000 * 60)) / 1000);
-            console.dir(cols,duration)
+       
             }
             cols.sec--;
             if(cols.sec==-1){

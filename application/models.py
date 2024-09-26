@@ -40,7 +40,7 @@ class Event(db.Model):
     endTime=db.Column(db.DateTime,nullable=False)
     startTime=db.Column(db.DateTime,nullable=False)
     isApproved=db.Column(db.Boolean,default=False)
-    voterCount=db.Column(db.Integer())
+    voterCount=db.Column(db.Integer(),default=0)
     durHour=db.Column(db.Integer())
     durMin=db.Column(db.Integer())
     numWinners=db.Column(db.Integer(),default=1)
