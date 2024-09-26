@@ -102,12 +102,14 @@
     {% if (event.endTime>event.endTime.now()) %}
     {%if not vuser.vote %}
     {%if (event.startTime<event.startTime.now())%}
+    <p id="link" style="display:none">/{{user.id}}/{{event.id}}/vote</p>
+    
       <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
-        <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="Vote Button" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="VButton" >Vote</button>
       </div>
       {%endif%}
       <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">
-        <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="vote" href="/{{user.id}}/{{event.id}}/vote" target="_blank">Vote</a>
+        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" id="vote" >Vote</button>
       </div>
     {%else%}
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5">

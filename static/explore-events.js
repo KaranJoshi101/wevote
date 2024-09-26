@@ -3,6 +3,7 @@ let vote=document.querySelector("#vote");
 let startTimer=document.querySelector("#startTimer");
 let startDate=document.querySelector("#startDate");
 let exp=document.querySelector('#exp');
+let VButton=document.querySelector('#VButton');
 class Timer{
     constructor(d,h,m,s){
         this.days=d;
@@ -99,8 +100,13 @@ var duration="";
     },1000)
  }   
         
+vote.addEventListener('click',()=>{
+    window.location.replace(document.querySelector('#link').innerText);
+})
 
-        
+VButton.addEventListener('click',()=>{
+    window.location.replace(document.querySelector('#link').innerText);
+})
         
 
 
