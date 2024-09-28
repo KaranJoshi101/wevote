@@ -93,42 +93,20 @@
       </div>
   </div>
 
-  <div class="container pt-5">
-    <div class="album bg-body">
-      <div class="container">
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-5">
-          <!-- This is event box1 -->
-          <div class="container">
-            <div class="table-responsive">
-                <table class="table table-sm caption-top table-bordered">
-                    <caption><b>Highlights</b></caption>
-                    <thead>
-                      <tr>
-                        <th scope="col" class="text-center">Total Voters</th>
-                        <th scope="col" class="text-center">Total Voting</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                      <tr>
-                        <td class="text-center">{{voterCount}}</td>
-                        <td class="text-center">ye abhi update krna hai</td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
-          </div>
-            <!-- end of a box2 -->
-
-            <!-- This is event box2 -->
-          <div class="container">
-            <img src="/static/pie-chart.png" class="img-fluid" alt="...">
-          </div>
-            <!-- end of a box2 -->
-             
-        </div>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4">
+        <ul style="list-style:disc">
+          <li><b>Total Voter :</b>{{voterCount}}</li>
+          <li><b>Total Voting :</b>ye abhi update krna hai</li>
+        </ul>
+      </div>
+      <div class="col-md-8 pt-3">
+        <h4 class="text-center fw-6">Share of Votes</h4>
+        <img src="/static/pie-chart.png" class="img-fluid" alt="...">
       </div>
     </div>
-</div>
+  </div>
 
   
 </body>
