@@ -3,7 +3,7 @@ def Otp():
     import random
     k=0
     for i in range(6):
-        k=k*10+random.randrange(0,9)
+        k=k*10+random.randrange(1,9)
     return k
 
 #separates username from email
@@ -26,10 +26,13 @@ def deleteEvent(event_id):
         db.session.delete(i)
     db.session.commit()
 
-
+#check allowed image extensions
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #methods imported from flask module
-from flask import Flask,render_template, redirect, request,url_for, flash
+from flask import Flask,render_template, redirect, request,url_for, flash,send_file
 from werkzeug.utils import secure_filename
 from flask import current_app as app
 import uuid as uuid
@@ -316,16 +319,36 @@ def registerCandidate(userId,eventId):
         v.branch=request.form.get("branch")
         v.gender=request.form.get("gender")
         
-        u.candidateProfile=request.files["candidateProfile"]
+
+        #check
         
-        dp=secure_filename(u.candidateProfile.filename)
-        candidateProfile=str(uuid.uuid1())+"_"+dp
-        u.candidateProfile.save(os.path.join(app.config['UPLOAD_FOLDER'],candidateProfile))
-        u.candidateProfile=candidateProfile
-        v.candidature=0
+        file=request.files["candidateProfile"]
+        max_size = 1024 * 1024
+   
+
+
+        if file and allowed_file(file.filename):
+            print(file)
+            print(file.filename)
+            # Process the file (e.g., save it)
+            if len(file.read()) > max_size:
+                flash('Image size too large!')
+            else:
+                file.seek(0)
+                u.candidateProfile=file
+                dp=secure_filename(u.candidateProfile.filename)
+                candidateProfile=str(uuid.uuid1())+"_"+dp
+                u.candidateProfile.save(os.path.join(app.config['UPLOAD_FOLDER'],candidateProfile))
+                u.candidateProfile=candidateProfile
+                v.candidature=0
+                db.session.commit()
+                return redirect(f'/{userId}/{eventId}/explore')
+        else:
+            flash('Invalid image type')
         
-        db.session.commit()
-        return redirect(f'/{userId}/{eventId}/explore')
+        
+        
+        
     u=User.query.get(userId)
     return render_template('register-candidate.html',user=u)
 
@@ -366,7 +389,6 @@ def result(eventId):
     check=Vote.query.filter_by(eventId=eventId).all()
     e=Event.query.get(eventId)
     numWinners=e.numWinners
-    count=0
     mList=[]
     for i in check:
         if(i.role=='candidate' and i.candidature==0):
@@ -378,9 +400,30 @@ def result(eventId):
     for i,j,k in mList[numWinners:]:
         losers.append((i,j))
     
-    return render_template('result.html',winners=winners,losers=losers,voterCount=e.voterCount)
+    return render_template('result.html',eventId=eventId,winners=winners,losers=losers,voterCount=e.voterCount)
 
 
 @app.route('/public')
 def public():
     return render_template('public-events.html')
+
+
+
+# @app.route('/<eventId>/download')
+# def return_files_tut(eventId):
+#     import asyncio
+#     from pyppeteer import launch
+
+#     async def generate_pdf(url, pdf_path):
+#         browser = await launch()
+#         page = await browser.newPage()
+    
+#         await page.goto(url)
+    
+#         await page.pdf({'path': pdf_path, 'format': 'A4'})
+    
+#         await browser.close()
+
+# # Run the function
+#     asyncio.get_event_loop().run_until_complete(generate_pdf(f'/{eventId}/result', 'example.pdf'))
+

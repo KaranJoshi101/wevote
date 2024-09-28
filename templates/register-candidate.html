@@ -30,7 +30,9 @@
     <div class="input-group mb-2">
       <input type="file" class="form-control" id="inputGroupFile02" name="candidateProfile">
     </div>
-
+    {%for message in get_flashed_messages()%}
+    <p style="color: rgb(214, 4, 4); font-size: small; margin-top: 2px;">{{message}}</p>
+    {%endfor%}
     <div class="mb-3 mt-3">
       <label for="exampleFormControlTextarea1" class="form-label">Add Your Motive/ Your Plans</label>
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="motive"></textarea>
@@ -58,5 +60,11 @@
   
 </form>
   </div>    
+  <script type="text/javascript">
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+  </script>
 </body>
 </html>
