@@ -24,12 +24,12 @@ body{
   }
    
   .sidebar a.active {
-    background: linear-gradient(to top right, #33ccff 0%, #0000ff 100%);
+    background:  #05325E;
     color: white;
   }
   
   .sidebar a:hover:not(.active) {
-    background-color: skyblue;
+    background-color: #05325e6d;
     color: white;
   }
   

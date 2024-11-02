@@ -43,13 +43,13 @@
     cursor: pointer;
     border-radius: 6px;
     pointer-events: none;
-    background: #6e93f7;
+    background:#05325e98;
     transition: all 0.2s ease;
   }
   form button.active {
-    background: #4070f4;
+    background: #05325eca;
     pointer-events: auto;
   }
   form button:hover {
-    background: #0e4bf1;
+    background: #05325E;
   }
