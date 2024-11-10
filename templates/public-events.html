@@ -26,9 +26,9 @@
                 </ul>
                 <form class="d-flex" role="search">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                  <button class="btn btn-outline-dark me-2" type="submit">Search</button>
                 </form>
-                <a class="btn btn-primary" href="/login">Login/Register</a>
+                <a class="btn btn-primary" href="/login" style="background-color: #05325E; border-color: #05325E;">Login/Register</a>
               </div>
             </div>
           </nav>
@@ -38,7 +38,7 @@
                 <div class="active pt-5" id="myevents">
                     <h1 class="pt-1">Public Events</h1>
                     {% if events|length == 0 %}
-                      <p>No Events For You. Don't Worry! <a id="createOne" href="/login">Let's Create One</a></p>
+                    <p class="h4 pt-5 text-center">No Events For You. Don't Worry! <a id="createOne" href="#organize" style="color: #05325E;">Let's Create One</a></p>
                     {%else%}
                     <div class="container pt-1">
                       <div class="album py-5 bg-body">
@@ -73,7 +73,7 @@
                           
                                   
                                     <div class="d-flex justify-content-center align-items-center">
-                                      <a href="/{{user.id}}/{{event.id}}/explore" type="button" style="width:80%" class="btn btn-primary" >Explore</a>
+                                      <a href="/{{user.id}}/{{event.id}}/explore" type="button" style="width:80% ;background-color: #05325E; border-color: #05325E;" class="btn btn-primary" >Explore</a>
                                     </div>
                                   </div>
                                 </div>

@@ -29,18 +29,21 @@
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <button class="btn btn-outline-dark me-2" type="submit">Search</button>
             </form>
             <a class="btn btn-danger" href="/">Logout</a>
           </div>
         </div>
       </nav>
-    <h2>Review Events</h2>
+
+      <div class="container">
+        <h2 class="pt-4">Review Events</h2>
     {% if events|length == 0 %}
         <h3>No Events To Review</h3>
     
     {%else%}
-    <table class="table table-bordered">
+    <div class="table-responsive">
+      <table class="table table-bordered">
         <thead>
             <tr>
                 <th scope="col">S.No.</th>
@@ -62,14 +65,16 @@
                 <tr>
                     <th scope="row">{{loop.index}}</th>
                     <td>{{event.createTime}}</td>
-                    <td><a href="/admin/{{event.organizerId}}/watchUser">{{event.organizerId}}</a></td>
+                    <td><a href="/admin/{{event.organizerId}}/watchUser" style="color: #05325E;">{{event.organizerId}}</a></td>
                     <td>{{event.title}}</td>
                     <td>{{event.desc}}</td>
                     <td>{{event.voterCount}}</td>
                     <td>{{event.startTime}}</td>
                     <td>{{event.endTime}}</td>
                     <td><input type="text" placeholder="Reason for your action"></td>
-                    <td><a type="button" class="btn btn-primary" href="/admin/{{event.id}}/approve">Approve</a><a type="button" class="btn btn-danger" href="/admin/{{event.id}}/reject">Reject</a></td>
+                    <td> <a type="button" class="btn btn-primary my-2" href="/admin/{{event.id}}/approve" style="background-color: #05325E; border-color: #05325E;">Approve</a><br>
+                         <a type="button" class="btn btn-danger" href="/admin/{{event.id}}/reject">Reject</a>
+                    </td>
             
                 </tr>
              
@@ -79,5 +84,7 @@
         </tbody>
     </table>
     {%endif%}
+    </div>
+      </div>
 </body>
 </html>

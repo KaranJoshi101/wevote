@@ -49,3 +49,13 @@ if(createOne){
         
     })
 }
+
+
+
+//after hitting enter from title, we move to desc
+document.getElementById('formGroupExampleInput').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission
+      document.getElementById('exampleFormControlTextarea1').focus(); // Move focus to the textarea
+    }
+  });
