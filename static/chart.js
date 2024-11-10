@@ -39,7 +39,30 @@ data: {
 options: {
   title: {
     display: true,
-    text: "Vote Share(in %)"
+    text: "Vote Share(in %)",
+    responsive: false,
+    maintainAspectRatio: true
   }
 }
+});
+
+document.getElementById("downloadPDF").addEventListener("click", function () {
+  // Select the element with class name "result-table"
+  var element = document.querySelector(".result-table");
+
+  // Options for the PDF, with landscape orientation
+  var options = {
+      margin:       0.5, // Margin around the content
+      filename:     'Event_result.pdf', // Filename for the PDF
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { 
+      scale: 2,         // Adjust canvas scale for better quality
+      scrollY: 0,       // Ensure the full content is rendered
+      useCORS: true,    // Handle cross-origin content like images
+    }, 
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' } // Landscape PDF
+  };
+
+  // Generate and download the PDF from the selected element
+  html2pdf().set(options).from(element).save();
 });
