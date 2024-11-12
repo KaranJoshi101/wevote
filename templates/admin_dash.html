@@ -37,13 +37,29 @@
       </nav>
       <p class="text-center pt-4 display-6">This is admin Dashboard</p>
       <br><br>
-      <div class="container text-center" style="font-size: larger;">
-        <p>Total Number  of Registered Users : 122.3k</p>
-        <p>Total Number  of organised Events : 5.9k</p>
-        <p>Total Number  of Ongoing Live Events : 2.3k</p>
-        <p>Total Number  of Past Events : 1.3k</p>
-        <p>Total Number  of Upcoming Events : 2.3k</p>
-      </div>
+      <div class="container table-responsive mt-5" >
+        <h4>Organizers</h4>
+        <table class="table  table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for organizer in organizers%}
+            <tr>
+              <td>{{organizer.id}}</td>
+              <td>{{organizer.name}}</td>
+              {%if organizer.status==-1%}<td>Banned</td><td><a href="/admin/{{organizer.id}}/ban">Unban</a></td>{%elif organizer.status==0%}<td>To be Reviewed</td><td><a href="/admin/{{organizer.id}}/approve" style="color: green;">Approve</a>  <a href="/admin/{{organizer.id}}/reject" style="color: red;">Reject</a></td>{%else%}<td>Approved</td><td><a href="/{{organizer.id}}/organizer/ban">Ban</a></td>{%endif%}
+            </tr>
+        
+        {%endfor%}
+        </tbody>
+        </table>
+      
       
 </body>
 </html>

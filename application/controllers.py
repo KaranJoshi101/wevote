@@ -1,3 +1,17 @@
+def idGen(name=None):
+    import uuid
+    if(name):
+        return name[:2].upper()+str(uuid.uuid4())[:4]
+    else:
+        return str(uuid.uuid4())[:6]
+def allowed_orgfile(filename):
+    ALLOWED_EXTENSIONS = {'pdf','doc'}
+    name=''
+    for i in filename:
+        if i!=' ':
+            name+=i
+    print(name,'.' in name and name.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
+    return '.' in name and name.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 #otp generating function
 def Otp():
     import random
@@ -28,7 +42,7 @@ def deleteEvent(event_id):
 
 #check allowed image extensions
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif','webp'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #methods imported from flask module
@@ -71,14 +85,21 @@ def login():
         
         if e=='iamadmin@gmail.com' and p=='123':   #checking admin id credentials
             return redirect('/admin')   #takes to '/admin' page
-        rec=User.query.filter_by(email=e).first()
-        if rec and rec.registered:
+        rec=Organizer.query.filter_by(email=e).first()
+        if rec:
             if rec.pwd==p:
-                return redirect(f'/{rec.id}/home') 
+                return redirect(f'/{rec.id}/organizer/dashboard')
             else:
-                flash("incorrect password")
+                flash('incorrect password')
         else:
-            flash('invalid email. Register Now')
+            rec=User.query.filter_by(email=e).first()
+            if rec and rec.registered:
+                if rec.pwd==p:
+                    return redirect(f'/{rec.id}/home') 
+                else:
+                    flash("incorrect password")
+            else:
+                flash('invalid email. Register Now')
 
            #takes to '/user' page
     
@@ -110,7 +131,7 @@ def verifyEmail(email):
     if user_rec:
         user_rec.otp=o
     else:
-        user_rec=User(email=email,otp=o)
+        user_rec=User(id=idGen('US'),email=email,otp=o)
         db.session.add(user_rec)
     db.session.commit()
     #otp sender
@@ -167,7 +188,8 @@ def setPassword(email):
 #url for admin dashboard
 @app.route('/admin')
 def adminDashboard():
-    return render_template('admin_dash.html')
+    organizers=Organizer.query.all()
+    return render_template('admin_dash.html',organizers=organizers)
 
 #url for admin review
 @app.route('/admin/review')
@@ -176,12 +198,19 @@ def adminReview():
     return render_template('admin_review.html',events=events)
 
 #url for admin approved
-@app.route('/admin/<int:event_id>/approve')
-def adminApprove(event_id):
-    record=Event.query.get(event_id)
-    record.isApproved=True
+@app.route('/admin/<orgId>/approve')
+def adminApprove(orgId):
+    record=Organizer.query.get(orgId)
+    record.status=1
     db.session.commit()
-    return redirect('/admin/review')
+    return redirect('/admin')
+
+@app.route('/admin/<orgId>/reject')
+def adminReject(orgId):
+    record=Organizer.query.get(orgId)
+    record.status=-1
+    db.session.commit()
+    return redirect('/admin')
 
 
 #url for admin search of user
@@ -193,12 +222,12 @@ def adminWatchUser(userId):
 
 
 
-@app.route('/admin/<event_id>/reject')
+@app.route('/admin/<event_id>/event/reject')
 def adminRejects(event_id):
     deleteEvent(event_id)
     return redirect('/admin/review')
 
-@app.route('/<userId>/<eventId>/delete')
+@app.route('/<userId>/<eventId>/event/delete')
 def userDelete(userId,eventId):
     deleteEvent(eventId)
     return redirect(f'/{userId}/home')
@@ -207,89 +236,7 @@ def userDelete(userId,eventId):
 #url for user dashboard
 @app.route('/<userId>/home',methods=['GET','POST'])
 def userDashboard(userId):
-    if request.method=='POST':
-        import datetime
-        t=request.form.get('title')
-        d=request.form.get('desc')
-        ti=request.form.get('stime')
-        checkNumWinners=request.form.get('checkNumWinners')
-        if(checkNumWinners):
-            numWinners=int(request.form.get('numWinners'))
-        else:
-            numWinners=1
-        stime=datetime.datetime(int(request.form.get('year')),int(request.form.get('month')),int(request.form.get('date')),int(ti[:2]),int(ti[3:]))
-        rec=User.query.get(userId)
-        durh=request.form.get('flexRadioDefault')
-        if durh=="durh":
-            durHour=int(request.form.get("extendhour"))
-            durMin=0
-            etime=stime+datetime.timedelta(hours=durHour)
-        else:
-            durMin=int(request.form.get("extendminute"))
-            durHour=0
-            etime=stime+datetime.timedelta(minutes=durMin)
-        
-        voters=request.form.get('voters').split(',')
-        e=Event(organizerId=userId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),durHour=durHour,durMin=durMin,numWinners=numWinners)
-        db.session.add(e)
-        db.session.commit()
-
-        allow=request.form.get('allowcand')
-        organizerEmail=User.query.get(userId).email
-        voterCount=0
-        if allow=='on':
-            candidates=request.form.get('candidates').split(',')
-
-            for i in candidates:
-                if i==organizerEmail:
-                    continue
-                check=User.query.filter_by(email=i).first()
-                if not check:
-                    newregistration=User(email=i)
-                    db.session.add(newregistration)
-                    db.session.commit()
-                check=User.query.filter_by(email=i).first()
-                r=Vote(eventId=e.id,userId=check.id,role='candidate')
-                
-                db.session.add(r)
-                voterCount+=1
-                db.session.commit()
-        
-            
-            for i in voters:
-                if i==organizerEmail:
-                    continue
-                check=User.query.filter_by(email=i).first()
-                if not check:
-                    newregistration=User(email=i)
-                    db.session.add(newregistration)
-                    db.session.commit()
-                check=User.query.filter_by(email=i).first()
-                if(not Vote.query.filter_by(userId=check.id,eventId=e.id).first()):
-                    r=Vote(eventId=e.id,userId=check.id,role='voter')
-                    db.session.add(r)
-                    voterCount+=1
-                    db.session.commit()
-        else:
-            
-            for i in voters:
-                if i==organizerEmail:
-                    continue
-                check=User.query.filter_by(email=i).first()
-                if not check:
-                    newregistration=User(email=i)
-                    db.session.add(newregistration)
-                    db.session.commit()
-                check=User.query.filter_by(email=i).first()
-                r=Vote(eventId=e.id,userId=check.id,role='candidate')
-                voterCount+=1
-                db.session.add(r)
-                db.session.commit()
-        v=Vote(eventId=e.id,userId=userId,role='organizer')
-        db.session.add(v)
-        e.voterCount=voterCount
-        db.session.commit()
-        return render_template('organize_thank_you.html',userId=userId)
+    
     user=User.query.get(userId)
     events=[]
     for v in user.votes:
@@ -298,7 +245,7 @@ def userDashboard(userId):
 
 
 @app.route('/<userId>/<eventId>/explore')
-def exploreEvent(userId,eventId):
+def exploreEvent(userId,eventId,org=None):
     event=Event.query.get(eventId)
     cand=[]
     user=User.query.get(userId)
@@ -310,7 +257,7 @@ def exploreEvent(userId,eventId):
     vuser=Vote.query.filter_by(userId=userId,eventId=eventId).first()
     return render_template('explore-events.html',event=event,user=user,vote=vote,cand=cand,vuser=vuser)
 
-@app.route('/<userId>/<eventId>/register',methods=['GET','POST'])
+@app.route('/<userId>/<eventId>/candidate/register',methods=['GET','POST'])
 def registerCandidate(userId,eventId):
     if request.method=='POST':
         v=Vote.query.filter_by(userId=userId,eventId=eventId).first()
@@ -402,6 +349,127 @@ def result(eventId):
     
     return render_template('result.html',eventId=eventId,winners=winners,losers=losers,voterCount=e.voterCount)
 
+@app.route('/<userId>/org/register',methods=['GET','POST'])
+def orgRegister(userId):
+    user=User.query.get(userId)
+    if request.method=='POST':
+        u=Organizer(id=idGen('OG'),name=user.name,email=user.email,pwd=user.pwd,phone=request.form.get('phone'),org_type=request.form.get('org-type'),org_name=request.form.get('org-name'))
+        db.session.add(u)
+        db.session.delete(user)
+        file=request.files["file"]
+        
+        max_size = 10*1024 * 1024
+
+        if allowed_orgfile(file.filename):
+                # Process the file (e.g., save it)
+            if len(file.read()) > max_size:
+                flash('File size too large!')
+            else:
+                file.seek(0)
+                u.file=file
+                dp=secure_filename(u.file.filename)
+                file=str(uuid.uuid1())+"_"+dp
+                u.file.save(os.path.join(app.config['UPLOAD_FOLDER'],file))
+                u.file=file
+                db.session.commit()
+                return redirect(f'/{u.id}/organizer/dashboard')
+        else:
+            flash('Invalid file type')
+        
+        
+
+    return render_template('reg-org.html',user=user)
+
+@app.route('/<orgId>/organizer/dashboard',methods=['GET','POST'])
+def orgDashboard(orgId):
+    org=Organizer.query.get(orgId)
+    if request.method=='POST':
+        import datetime
+        t=request.form.get('title')
+        d=request.form.get('desc')
+        checkNumWinners=request.form.get('checkNumWinners')
+        if(checkNumWinners):
+            numWinners=int(request.form.get('numWinners'))
+        else:
+            numWinners=1
+        dateTime=request.form.get('dtpicker').split('T')
+        date=dateTime[0].split('-')
+        time=dateTime[1].split(':')
+
+        stime=datetime.datetime(int(date[0]),int(date[1]),int(date[2]),int(time[0]),int(time[1]))
+        durh=request.form.get('flexRadioDefault')
+        if durh=="durh":
+            durHour=int(request.form.get("extendhour"))
+            durMin=0
+            etime=stime+datetime.timedelta(hours=durHour)
+        else:
+            durMin=int(request.form.get("extendminute"))
+            durHour=0
+            etime=stime+datetime.timedelta(minutes=durMin)
+        
+        voters=request.form.get('voters').split(',')
+        e=Event(id=idGen('EV'),organizerId=orgId,title=t,desc=d,endTime=etime,startTime=stime,createTime=datetime.datetime.now(),durHour=durHour,durMin=durMin,numWinners=numWinners)
+        db.session.add(e)
+        db.session.commit()
+
+        allow=request.form.get('allowcand')
+        organizerEmail=org.email
+        voterCount=0
+        if allow=='on':
+            candidates=request.form.get('candidates').split(',')
+
+            for i in candidates:
+                if i==organizerEmail:
+                    continue
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(id=idGen('US'),email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                r=Vote(id=idGen('VO'),eventId=e.id,userId=check.id,role='candidate')
+                
+                db.session.add(r)
+                voterCount+=1
+                db.session.commit()
+        
+            
+            for i in voters:
+                if i==organizerEmail:
+                    continue
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(id=idGen('US'),email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                if(not Vote.query.filter_by(userId=check.id,eventId=e.id).first()):
+                    r=Vote(id=idGen('VO'),eventId=e.id,userId=check.id,role='voter')
+                    db.session.add(r)
+                    voterCount+=1
+                    db.session.commit()
+        else:
+            
+            for i in voters:
+                if i==organizerEmail:
+                    continue
+                check=User.query.filter_by(email=i).first()
+                if not check:
+                    newregistration=User(id=idGen('US'),email=i)
+                    db.session.add(newregistration)
+                    db.session.commit()
+                check=User.query.filter_by(email=i).first()
+                r=Vote(id=idGen('VO'),eventId=e.id,userId=check.id,role='candidate')
+                voterCount+=1
+                db.session.add(r)
+                db.session.commit()
+        v=Vote(id=idGen('VO'),eventId=e.id,userId=orgId,role='organizer')
+        db.session.add(v)
+        e.voterCount=voterCount
+        db.session.commit()
+        return render_template('organize_thank_you.html',orgId=orgId)
+    events=Event.query.filter_by(organizerId=orgId).all()
+    return render_template('org-dashboard.html',org=org,events=events)
 
 @app.route('/public')
 def public():
