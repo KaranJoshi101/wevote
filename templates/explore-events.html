@@ -53,7 +53,7 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5 mb-5" id="r-cand">
       {%if v.role=='candidate'%}
       {%if v.candidature==-1 and event.startTime>event.startTime.now()%}
-      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/{{user.id}}/{{event.id}}/register">Register as a Candidate</a>
+      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/{{user.id}}/{{event.id}}/candidate/register" style="background-color: #05325E; border-color: #05325E;">Register as a Candidate</a>
       {%else%}
       <button class="btn btn-success">Successfully Registered</button>
       {%endif%}
@@ -124,7 +124,6 @@
       
     </div>
   </div>
-
 
 
   <script src="/static/explore-events.js"></script>

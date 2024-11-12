@@ -28,7 +28,7 @@ for(let c of click){
         }
         if(!c.c){
             if(!disabled){
-                c.l.style.background='linear-gradient(to bottom, #003399 0%, #cc33ff 100%)';
+                c.l.style.background='green';
             
             c.l.innerText='Selected';
             c.c=1;
@@ -40,7 +40,7 @@ for(let c of click){
             
         }
         else{
-            c.l.style.background='linear-gradient(to bottom, #00ffcc 0%, #ff99ff 100%)';
+            c.l.style.background='#05325E';
             c.l.innerText='Select';
             c.c=0;
             sCand=sCand.toSpliced(sCand.indexOf(c.f),1);

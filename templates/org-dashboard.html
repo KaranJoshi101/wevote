@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Events</title>
+    <title>My Dashboard</title>
     
     <link rel="stylesheet" href="/static/specific-event.css">
     <link rel="stylesheet" href="/static/user_myevents.css">
@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <strong class="text-primary-emphasis"><a class="navbar-brand" href="#">{{user.name}}'s Dashboard</a> </strong>
+      <strong class="text-primary-emphasis"><a class="navbar-brand" href="#">{{org.name}}'s Dashboard</a> </strong>
       <a class="btn btn-danger btn-sm" href="/">Logout</a>
     </div>
   </nav>
@@ -22,16 +22,23 @@
   <div class="sidebar pt-5">
       <a class="active disabled" href="#myevents" id="myeventsbtn" >My Events</a>
       <a href="#allevents" id="alleventsbtn">Public Events</a>
+      {%if org.status==1%}
+      <a href="#organize" id="organizebtn">Organize</a>
+      {%endif%}
   </div>
 
       
     <div class="content">
       
       <div class="active pt-5" id="myevents">
+        {%if org.status == 0%}
+      <p>You are yet to be approved by Admin</p>
+      {%elif org.status ==-1%}
+      <p>You are banned by Admin</p>
+        {%else%}
           <h1 class="pt-1">My Events</h1>
-          <a href="/{{user.id}}/org/register">Register as Event Organizer</a>
           {% if events|length == 0 %}
-            <p class="h4 pt-5 text-center">No Events For You.</p>
+            <p class="h4 pt-5 text-center">No Events For You. Let's Create One!!</p>
           {%else%}
           <div class="container pt-1">
             <div class="album py-5 bg-body">
@@ -66,7 +73,7 @@
                 
                         
                           <div class="d-flex justify-content-center align-items-center">
-                            <a href="/{{user.id}}/{{event.id}}/explore" type="button" style="width:80% ;background-color: #05325E; border-color: #05325E;" class="btn btn-primary">Explore</a>
+                            <a href="/{{org.id}}/{{event.id}}/explore" type="button" style="width:80% ;background-color: #05325E; border-color: #05325E;" class="btn btn-primary">Explore</a>
                           </div>
                         </div>
                       </div>
@@ -77,6 +84,7 @@
           </div>
         </div>
       {%endif%}
+    {%endif%}
       </div>
       
 
@@ -119,7 +127,7 @@
                 
                         
                           <div class="d-flex justify-content-center align-items-center">
-                            <a href="/{{user.id}}/{{event.id}}/explore" type="button" style="width:80% ;background-color: #05325E; border-color: #05325E;" class="btn btn-primary" >Explore</a>
+                            <a href="/{{org.id}}/{{event.id}}/explore" type="button" style="width:80% ;background-color: #05325E; border-color: #05325E;" class="btn btn-primary" >Explore</a>
                           </div>
                         </div>
                       </div>
@@ -133,6 +141,126 @@
       </div>
     </div>
 
-  </div>
-
+  
+<div class="container d-flex justify-content-center pt-5">
+    <div class="col col-sm-8 pt-5" id="organize">
+      <form method="POST">
+      <div class="pt-5">
+        <h3 style="text-align: center;font-weight: 700;">Organise an Event</h3>
+        <p style="text-align: center;font-size: smaller;color: rgb(99, 97, 97);">Complete the below fields to organise an event.</p>
+      </div>
+      <div class="mb-3">
+        <label for="validationCustom01" class="form-label" style="margin-bottom: 1px;">Title<p style="display: inline;color: rgb(184, 4, 4);">*</p></label>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Title of Event" name="title" required>
+      </div>
+  
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Add Description</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="desc"></textarea>
+      </div>
+      <span>
+        
+        <div class="col-sm-12 col-md-5 col-lg-5">
+          <p >Choose Start Date and Time of Event</p>
+          <input type="datetime-local" id="dtpicker" name="dtpicker">
+        </div>
+      </span>
+      <br><br>
+      <p style="line-height: 10px;" >Duration of Event</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="durh" checked>
+        <label class="form-check-label" for="flexRadioDefault1">
+          <select class="form-select c " aria-label="Default select example" name="extendhour" >
+            <option value="1" selected>1 Hour</option>
+            <option value="2">2 Hours</option>
+            <option value="3">3 Hours</option>
+            <option value="4">4 Hours</option>
+            <option value="5">5 Hours</option>
+            <option value="6">6 Hours</option>
+            <option value="7">7 Hours</option>
+            <option value="8">8 Hours</option>
+            <option value="9">9 Hours</option>
+            <option value="10">10 Hours</option>
+            <option value="11">11 Hours</option>
+            <option value="12">12 Hours</option>
+            <option value="13">13 Hours</option>
+            <option value="14">14 Hours</option>
+            <option value="15">15 Hours</option>
+            <option value="16">16 Hours</option>
+            <option value="17">17 Hours</option>
+            <option value="18">18 Hours</option>
+            <option value="19">19 Hours</option>
+            <option value="20">20 Hours</option>
+            <option value="21">21 Hours</option>
+            <option value="22">22 Hours</option>
+            <option value="23">23 Hours</option>
+            <option value="24">24 Hours</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="durm">
+        <label class="form-check-label" for="flexRadioDefault2">
+          <select class="form-select c " aria-label="select example" id="flexRadioDefault2" name="extendminute"> 
+            <option value="5" selected>5 min</option>
+            <option value="10">10 min</option>
+            <option value="15">15 min</option>
+            <option value="20">20 min</option>
+            <option value="25">25 min</option>
+            <option value="30">30 min</option>
+            <option value="35">35 min</option>
+            <option value="40">40 min</option>
+            <option value="45">45 min</option>
+            <option value="50">50 min</option>
+            <option value="55">55 min</option>
+          </select>
+        </label>
+      </div>
+  
+      </br><br>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Public Event</label>
+      </div>
+  
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="checkNumWinners" id="no-of-winner">
+        Select if number of Winner is greater than 1
+        <label class="form-check-label" for="no-of-winner">
+          <select class="form-select form-select-sm" aria-label="Small select example" id="winner-select" name="numWinners">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </label>
+      </div>
+  
+  
+  
+     
+      <div class="input-group mb-3 mt-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" name="allowcand" aria-label="Checkbox for following text input">
+        </div>
+        <span class="input-group-text">Candidates</span>
+        <textarea class="form-control" aria-label="With textarea" rows="2" name="candidates" placeholder="check the checkbox to enter candidates email-ids separated with commas"></textarea>
+      </div>
       
+      <div class="input-group">
+        <span class="input-group-text">Voters<p style="display: inline;color: rgb(184, 4, 4);">*</p></span>
+        <textarea class="form-control" aria-label="With textarea" rows="5" name="voters" placeholder="enter voters email-ids separated with commas" required></textarea>
+      </div>
+    <button type="submit" class="btn btn-primary mt-3" name="request"  style="background-color: #05325E; border-color: #05325E;">Request for Event</button>
+  
+    </form>   
+    </div>
+  </div>
+  
+</div>
+  <script src="/static/specific-event.js"></script>
+  <script src="/static/timer.js"></script>
+</body>
+</html>
